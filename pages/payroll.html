@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Management - Fuel Express HR</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/payroll.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="employee.html">Employee Details</a></li>
+                <li><a href="attendance.html">Time & Attendance</a></li>
+                <li><a href="leave.html">Leave Module</a></li>
+                <li><a href="payroll.html" class="active">Payroll Module</a></li>
+                <li><a href="recruitment.html">Recruitment</a></li>
+                <li><a href="reports.html">Reports</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-money-bill-wave"></i> Payroll Management</h2>
+            <div class="header-actions">
+                <button id="generate-all-payslips" class="btn primary"><i class="fas fa-file-invoice-dollar"></i> Generate All Payslips</button>
+                <button id="export-payroll" class="btn secondary"><i class="fas fa-file-export"></i> Export Payroll Data</button>
+            </div>
+        </div>
+
+        <div class="payroll-controls">
+            <div class="control-group">
+                <label for="payroll-month">Month:</label>
+                <select id="payroll-month">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="payroll-year">Year:</label>
+                <select id="payroll-year">
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="department-filter">Department:</label>
+                <select id="department-filter">
+                    <option value="all">All Departments</option>
+                    <option value="Management">Management</option>
+                    <option value="Operations">Operations</option>
+                    <option value="Finance">Finance</option>
+                    <option value="HR">HR</option>
+                    <option value="IT">IT</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <button id="process-payroll" class="btn primary"><i class="fas fa-cogs"></i> Process Payroll</button>
+            </div>
+        </div>
+
+        <div class="payroll-summary">
+            <div class="summary-card">
+                <h3>Total Employees</h3>
+                <p id="total-employees">0</p>
+            </div>
+            <div class="summary-card">
+                <h3>Total Salary</h3>
+                <p id="total-salary">₹0.00</p>
+            </div>
+            <div class="summary-card">
+                <h3>Average Salary</h3>
+                <p id="average-salary">₹0.00</p>
+            </div>
+            <div class="summary-card">
+                <h3>Highest Salary</h3>
+                <p id="highest-salary">₹0.00</p>
+            </div>
+        </div>
+
+        <div class="payroll-table-container">
+            <table id="payroll-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Basic Salary</th>
+                        <th>Allowances</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="payroll-data">
+                    <!-- Payroll data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payslip Modal -->
+        <div id="payslip-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Employee Payslip</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body" id="payslip-content">
+                    <div class="payslip-header">
+                        <div class="company-info">
+                            <img src="../img/logo.png" alt="Fuel Express Logo" class="payslip-logo">
+                            <h2>Fuel Express Pvt. Ltd.</h2>
+                            <p>123 Fuel Street, Energy City</p>
+                            <p>Phone: +1 234 567 8900 | Email: hr@fuelexpress.com</p>
+                        </div>
+                        <div class="payslip-title">
+                            <h3>PAYSLIP</h3>
+                            <p id="payslip-period">For the month of <span id="payslip-month-year">August 2023</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="employee-details">
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Employee ID:</label>
+                                <span id="payslip-emp-id"></span>
+                            </div>
+                            <div class="detail-group">
+                                <label>Name:</label>
+                                <span id="payslip-name"></span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Department:</label>
+                                <span id="payslip-department"></span>
+                            </div>
+                            <div class="detail-group">
+                                <label>Designation:</label>
+                                <span id="payslip-designation"></span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-group">
+                                <label>Bank Account:</label>
+                                <span id="payslip-account"></span>
+                            </div>
+                            <div class="detail-group">
+                                <label>PAN:</label>
+                                <span id="payslip-pan"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="salary-details">
+                        <div class="salary-section">
+                            <h4>Earnings</h4>
+                            <div class="salary-row">
+                                <span>Basic Salary</span>
+                                <span id="payslip-basic"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>HRA</span>
+                                <span id="payslip-hra"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Conveyance</span>
+                                <span id="payslip-conveyance"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Special Allowance</span>
+                                <span id="payslip-special"></span>
+                            </div>
+                            <div class="salary-row total">
+                                <span>Total Earnings</span>
+                                <span id="payslip-total-earnings"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="salary-section">
+                            <h4>Deductions</h4>
+                            <div class="salary-row">
+                                <span>PF</span>
+                                <span id="payslip-pf"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Income Tax</span>
+                                <span id="payslip-tax"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Professional Tax</span>
+                                <span id="payslip-prof-tax"></span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Other Deductions</span>
+                                <span id="payslip-other-deductions"></span>
+                            </div>
+                            <div class="salary-row total">
+                                <span>Total Deductions</span>
+                                <span id="payslip-total-deductions"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="net-salary">
+                        <div class="net-salary-row">
+                            <span>Net Salary</span>
+                            <span id="payslip-net-salary"></span>
+                        </div>
+                        <div class="salary-in-words">
+                            <span>Amount in words: </span>
+                            <span id="payslip-amount-words"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="payslip-footer">
+                        <p>This is a computer-generated payslip and does not require a signature.</p>
+                        <p>For any queries regarding this payslip, please contact the HR department.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="print-payslip" class="btn primary"><i class="fas fa-print"></i> Print</button>
+                    <button id="download-payslip" class="btn secondary"><i class="fas fa-download"></i> Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Fuel Express Pvt. Ltd.</h4>
+                <p>Your trusted partner in fuel distribution and management.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="employee.html">Employees</a></li>
+                    <li><a href="attendance.html">Attendance</a></li>
+                    <li><a href="leave.html">Leave</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Fuel Street, Energy City</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                <p><i class="fas fa-envelope"></i> hr@fuelexpress.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/employees.js"></script>
+    <script src="../js/payroll.js"></script>
+</body>
+</html>

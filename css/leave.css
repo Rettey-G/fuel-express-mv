@@ -1,0 +1,363 @@
+/* Leave Management Styles */
+
+.leave-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.leave-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.employee-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.employee-selector label {
+    font-weight: 500;
+}
+
+.employee-selector select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+/* Leave Summary Cards */
+.leave-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.leave-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.leave-card-header {
+    background-color: #f0f7ff;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.leave-card-header i {
+    font-size: 1.5rem;
+    color: #0056b3;
+}
+
+.leave-card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.leave-card-body {
+    padding: 15px;
+}
+
+.leave-balance {
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.leave-progress {
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #0056b3;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.leave-days-remaining {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Leave Calendar */
+.leave-calendar-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-controls h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.leave-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-weight: 500;
+    padding: 10px 0;
+    background-color: #f0f7ff;
+    border-radius: 4px;
+}
+
+.calendar-day {
+    min-height: 80px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    position: relative;
+}
+
+.calendar-date {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.calendar-day.today {
+    background-color: #f0f7ff;
+    border-color: #0056b3;
+}
+
+.calendar-day.weekend {
+    background-color: #f9f9f9;
+}
+
+.calendar-day.holiday {
+    background-color: #ffebee;
+}
+
+.calendar-day.has-leave {
+    background-color: #e8f5e9;
+}
+
+.leave-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.leave-annual {
+    background-color: #4caf50;
+}
+
+.leave-sick {
+    background-color: #f44336;
+}
+
+.leave-emergency {
+    background-color: #ff9800;
+}
+
+.leave-family {
+    background-color: #9c27b0;
+}
+
+.leave-offday {
+    background-color: #2196f3;
+}
+
+.leave-absent {
+    background-color: #607d8b;
+}
+
+.holiday-indicator {
+    background-color: #e91e63;
+}
+
+.leave-event {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+/* Leave Requests Table */
+.leave-requests-section, .public-holidays-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.leave-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.leave-table th, .leave-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+}
+
+.leave-table th {
+    background-color: #f0f7ff;
+    font-weight: 500;
+}
+
+.leave-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.status-pending {
+    color: #ff9800;
+    font-weight: 500;
+}
+
+.status-approved {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.status-rejected {
+    color: #f44336;
+    font-weight: 500;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+}
+
+.holidays-list-container {
+    margin-top: 30px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .leave-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management - Fuel Express</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/leave.css">
+    <link rel="stylesheet" href="../css/activities.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="employee.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="leave.html" class="active"><i class="fas fa-calendar-minus"></i> Leave</a></li>
+                <li><a href="payroll.html"><i class="fas fa-money-bill-wave"></i> Payroll</a></li>
+                <li><a href="recruitment.html"><i class="fas fa-user-plus"></i> Recruitment</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="leave-header">
+            <h2>Leave Management</h2>
+            <div class="leave-actions">
+                <div class="employee-selector">
+                    <label for="employee-select">Select Employee:</label>
+                    <select id="employee-select">
+                        <option value="">All Employees</option>
+                        <!-- Employee options will be loaded dynamically -->
+                    </select>
+                </div>
+                <button id="request-leave-btn" class="btn primary-btn"><i class="fas fa-plus"></i> Request Leave</button>
+                <button id="manage-holidays-btn" class="btn secondary-btn"><i class="fas fa-calendar-alt"></i> Manage Holidays</button>
+            </div>
+        </section>
+
+        <section class="leave-dashboard">
+            <div class="leave-summary-cards">
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <h3>Annual Leave</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="annual-leave-used">0</span>/<span id="annual-leave-total">30</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="annual-leave-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="annual-leave-remaining">30</span> days remaining
+                        </div>
+                    </div>
+                </div>
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-procedures"></i>
+                        <h3>Sick Leave</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="sick-leave-used">0</span>/<span id="sick-leave-total">30</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="sick-leave-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="sick-leave-remaining">30</span> days remaining
+                        </div>
+                    </div>
+                </div>
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Emergency Leave</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="emergency-leave-used">0</span>/<span id="emergency-leave-total">10</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="emergency-leave-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="emergency-leave-remaining">10</span> days remaining
+                        </div>
+                    </div>
+                </div>
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-users"></i>
+                        <h3>Family Care</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="family-leave-used">0</span>/<span id="family-leave-total">30</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="family-leave-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="family-leave-remaining">30</span> days remaining
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="leave-calendar-section">
+            <h3>Leave Calendar</h3>
+            <div class="calendar-controls">
+                <button id="prev-month" class="btn secondary-btn"><i class="fas fa-chevron-left"></i></button>
+                <h4 id="current-month">January 2023</h4>
+                <button id="next-month" class="btn secondary-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div id="leave-calendar" class="leave-calendar">
+                <!-- Calendar will be generated here -->
+            </div>
+        </section>
+
+        <section class="leave-requests-section">
+            <h3>Leave Requests</h3>
+            <div class="leave-requests-container" id="leave-requests-container">
+                <!-- Leave requests will be loaded here -->
+                <table class="leave-table">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Leave Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Days</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leave-requests-table">
+                        <!-- Leave requests will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="public-holidays-section">
+            <h3>Public Holidays (2023)</h3>
+            <div class="holidays-container">
+                <table class="leave-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Day</th>
+                            <th>Holiday Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holidays-table">
+                        <!-- Holidays will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <div class="activity-container" id="recent-activities">
+            <!-- Activities will be loaded here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Leave Request Modal -->
+    <div id="leave-request-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Request Leave</h3>
+            <form id="leave-request-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leave-employee">Employee</label>
+                        <select id="leave-employee" required>
+                            <!-- Employee options will be loaded dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-type">Leave Type</label>
+                        <select id="leave-type" required>
+                            <option value="annual">Annual Leave</option>
+                            <option value="sick">Sick Leave</option>
+                            <option value="emergency">Emergency Leave</option>
+                            <option value="family">Family Care</option>
+                            <option value="offday">Off Day</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leave-start">Start Date</label>
+                        <input type="date" id="leave-start" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-end">End Date</label>
+                        <input type="date" id="leave-end" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="leave-reason">Reason</label>
+                    <textarea id="leave-reason" rows="3" required></textarea>
+                </div>
+                
+                <!-- Conditional fields based on leave type -->
+                <div id="sick-leave-fields" class="conditional-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="medical-document">Medical Document</label>
+                        <input type="file" id="medical-document" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+                </div>
+                
+                <div id="annual-leave-fields" class="conditional-fields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ticket-from">Ticket From</label>
+                            <input type="text" id="ticket-from" placeholder="City/Country">
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket-to">Ticket To</label>
+                            <input type="text" id="ticket-to" placeholder="City/Country">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ticket Request</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="request-ticket">
+                            <label for="request-ticket">Request Company Ticket</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn primary-btn">Submit Request</button>
+                    <button type="button" class="btn secondary-btn" id="cancel-request">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Holidays Management Modal -->
+    <div id="holidays-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Manage Public Holidays</h3>
+            <form id="add-holiday-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="holiday-date">Date</label>
+                        <input type="date" id="holiday-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="holiday-name">Holiday Name</label>
+                        <input type="text" id="holiday-name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="holiday-type">Type</label>
+                        <select id="holiday-type" required>
+                            <option value="Public Holiday">Public Holiday</option>
+                            <option value="Government Holiday">Government Holiday</option>
+                            <option value="Bank Holiday">Bank Holiday</option>
+                            <option value="Season">Season</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary-btn">Add Holiday</button>
+                </div>
+            </form>
+            
+            <div class="holidays-list-container">
+                <h4>Current Holidays</h4>
+                <table class="leave-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Holiday Name</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holidays-management-table">
+                        <!-- Holidays will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Fuel Express Pvt. Ltd.</h4>
+                <p>Your trusted partner in fuel distribution and management.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="employee.html">Employees</a></li>
+                    <li><a href="attendance.html">Attendance</a></li>
+                    <li><a href="leave.html">Leave</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Fuel Street, Energy City</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                <p><i class="fas fa-envelope"></i> hr@fuelexpress.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../data/employees.js"></script>
+    <script src="../js/leave.js"></script>
+    <script src="../js/activities.js"></script>
+</body>
+</html>
