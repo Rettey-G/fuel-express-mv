@@ -772,14 +772,33 @@ const baseEmployees = [
         photo: "../img/employee-photos/priya.jpg"
     },
     {
-        id: "FE0041",
+        empNo: "FEM008",
+        id: "A789456",
         fullName: "Vikram Singh",
+        gender: "Male",
+        nationality: "Indian",
+        dateOfBirth: "15-May-88",
+        mobile: "6543210987",
         department: "Operations",
         position: "Station Supervisor",
-        phone: "6543210987",
-        email: "vikram.singh@fuelexpress.com",
-        hireDate: "2020-07-22",
-        salary: 3900,
+        workSite: "Station",
+        joinedDate: "22-Jul-20",
+        salary: {
+            MVR: 23100,
+            USD: 1500
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Vikram Singh",
+                accountNumber: "MVR6543210",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Vikram Singh",
+                accountNumber: "USD6543210",
+                bankName: "International Bank"
+            }
+        },
         emergencyContact: {
             name: "Meera Singh",
             relation: "Wife",
@@ -788,22 +807,145 @@ const baseEmployees = [
         photo: "../img/employee-photos/vikram.jpg"
     },
     {
-        id: "FE0042",
+        empNo: "FEM009",
+        id: "A654321",
         fullName: "Ananya Patel",
+        gender: "Female",
+        nationality: "Indian",
+        dateOfBirth: "05-Apr-92",
+        mobile: "5432109876",
         department: "Marketing",
         position: "Marketing Specialist",
-        phone: "5432109876",
-        email: "ananya.patel@fuelexpress.com",
-        hireDate: "2022-01-15",
-        salary: 3600,
+        workSite: "Office",
+        joinedDate: "15-Jan-22",
+        salary: {
+            MVR: 23100,
+            USD: 1500
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Ananya Patel",
+                accountNumber: "MVR5432109",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Ananya Patel",
+                accountNumber: "USD5432109",
+                bankName: "International Bank"
+            }
+        },
         emergencyContact: {
             name: "Rohan Patel",
             relation: "Husband",
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
+    },
+    {
+        empNo: "FEM010",
+        id: "A123789",
+        fullName: "Mohamed Rasheed",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "12-Aug-85",
+        mobile: "7788990",
+        department: "Operations",
+        position: "Supervisor",
+        workSite: "Station",
+        joinedDate: "10-Feb-19",
+        salary: {
+            MVR: 27720,
+            USD: 1800
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Mohamed Rasheed",
+                accountNumber: "MVR7788990",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Mohamed Rasheed",
+                accountNumber: "USD7788990",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Fathimath Rasheed",
+            relation: "Wife",
+            phone: "7788991"
+        },
+        photo: "../img/employee-photos/default.jpg"
+    },
+    {
+        empNo: "FEM011",
+        id: "A456123",
+        fullName: "Mariyam Waheed",
+        gender: "Female",
+        nationality: "Maldivian",
+        dateOfBirth: "23-Sep-90",
+        mobile: "9988770",
+        department: "HR",
+        position: "HR Manager",
+        workSite: "Office",
+        joinedDate: "05-Mar-20",
+        salary: {
+            MVR: 30800,
+            USD: 2000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Mariyam Waheed",
+                accountNumber: "MVR9988770",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Mariyam Waheed",
+                accountNumber: "USD9988770",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Ahmed Waheed",
+            relation: "Father",
+            phone: "9988771"
+        },
+        photo: "../img/employee-photos/default.jpg"
+    },
+    {
+        empNo: "FEM012",
+        id: "A789012",
+        fullName: "Hussain Faisal",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "18-Nov-88",
+        mobile: "7766550",
+        department: "Finance",
+        position: "Finance Manager",
+        workSite: "Office",
+        joinedDate: "12-Jun-18",
+        salary: {
+            MVR: 38500,
+            USD: 2500
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Hussain Faisal",
+                accountNumber: "MVR7766550",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Hussain Faisal",
+                accountNumber: "USD7766550",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Aminath Faisal",
+            relation: "Wife",
+            phone: "7766551"
+        },
+        photo: "../img/employee-photos/default.jpg"
     }
-    // Add more employees as needed to reach 150
 ];
 
 // Employee data management
