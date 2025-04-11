@@ -1,7 +1,7 @@
 // Employee data for Fuel Express HR Management System
 const baseEmployees = [
     {
-        empNo: "FEM001",
+        empNo: "FEM000",
         id: "A132309",
         fullName: "Ahmed Shiaz",
         gender: "Male",
@@ -36,7 +36,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/ahmed-shiaz.jpg"
     },
     {
-        empNo: "FEM002",
+        empNo: "FEM001",
         id: "A312547",
         fullName: "Ibrahim Jaleel",
         gender: "Male",
@@ -71,7 +71,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/ibrahim-jaleel.jpg"
     },
     {
-        empNo: "FEM003",
+        empNo: "FEM002",
         id: "A158962",
         fullName: "Aishath Fazaa Fazeel",
         gender: "Female",
@@ -106,7 +106,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/aishath-fazaa.jpg"
     },
     {
-        empNo: "FEM004",
+        empNo: "FEM003",
         id: "A060935",
         fullName: "Ahmed Hussain",
         gender: "Male",
@@ -141,7 +141,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/ahmed-hussain.jpg"
     },
     {
-        empNo: "FEM007",
+        empNo: "FEM004",
         id: "A133967",
         fullName: "Ahmed Hasnain",
         gender: "Male",
@@ -176,7 +176,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/ahmed-hasnain.jpg"
     },
     {
-        empNo: "FEM008",
+        empNo: "FEM005",
         id: "EL0110781",
         fullName: "Mohamed Hamvi Uddin",
         gender: "Male",
@@ -212,7 +212,7 @@ const baseEmployees = [
     },
 
     {
-        empNo: "FEM009",
+        empNo: "FEM006",
         id: "ED0459449",
         fullName: "Abdul Kalam Azad",
         gender: "Male",
@@ -247,7 +247,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/abdul-kalam.jpg"
     },
     {
-        empNo: "FEM010",
+        empNo: "FEM007",
         id: "L9299054",
         fullName: "Dhabbu Rao Timothy",
         gender: "Male",
