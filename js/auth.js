@@ -1,87 +1,112 @@
-// User data storage
+// Authentication Module for Fuel Express HR Management System
+
+// Constants for localStorage keys
+const AUTH_TOKEN_KEY = 'authToken';
 const USERS_KEY = 'fuel_express_users';
-const CURRENT_USER_KEY = 'fuel_express_current_user';
 
-// Initialize users if not exists
-if (!localStorage.getItem(USERS_KEY)) {
-    // Create default admin user
-    const defaultUsers = [
-        {
-            fullName: 'Admin User',
-            email: 'admin@fuelexpress.com',
-            username: 'admin',
-            password: 'admin123', // In a real app, this would be hashed
-            role: 'admin',
-            createdAt: new Date().toISOString()
-        }
-    ];
-    localStorage.setItem(USERS_KEY, JSON.stringify(defaultUsers));
-}
-
-// Check if user is logged in
-function checkAuth() {
-    const currentUser = localStorage.getItem(CURRENT_USER_KEY);
-    if (!currentUser) {
-        // Show login overlay
-        document.getElementById('login-overlay').style.display = 'flex';
-    } else {
-        // Hide login overlay
-        document.getElementById('login-overlay').style.display = 'none';
-        
-        // Update UI with user info
-        updateUIWithUserInfo(JSON.parse(currentUser));
+// Initialize default users if none exist
+function initializeUsers() {
+    if (!localStorage.getItem(USERS_KEY)) {
+        const defaultUsers = [
+            {
+                id: 'EMP-001',
+                fullname: 'Admin User',
+                email: 'admin@fuelexpress.com',
+                username: 'admin',
+                password: 'admin123', // In a real app, this would be hashed
+                role: 'admin',
+                position: 'System Administrator',
+                phone: '+1 123 456 7890',
+                address: '123 Admin St, Tech City',
+                dob: '01/01/1985',
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 'EMP-002',
+                fullname: 'John Doe',
+                email: 'john@fuelexpress.com',
+                username: 'john',
+                password: 'john123',
+                role: 'user',
+                position: 'Software Developer',
+                phone: '+1 234 567 8901',
+                address: '456 User Ave, Code Town',
+                dob: '05/15/1990',
+                createdAt: new Date().toISOString()
+            }
+        ];
+        localStorage.setItem(USERS_KEY, JSON.stringify(defaultUsers));
     }
 }
 
-// Update UI with user info
-function updateUIWithUserInfo(user) {
-    // You can customize this function to update UI elements with user info
-    console.log('Logged in as:', user.username);
+// Check if user is authenticated
+function isAuthenticated() {
+    return localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+// Get current user data
+function getCurrentUser() {
+    const token = isAuthenticated();
+    if (!token) return null;
     
-    // For example, you might want to add a user menu in the header
-    const header = document.querySelector('header');
-    
-    // Check if user menu already exists
-    if (!document.getElementById('user-menu')) {
-        const userMenu = document.createElement('div');
-        userMenu.id = 'user-menu';
-        userMenu.className = 'user-menu';
+    // In a real app, you would decode the JWT token or make an API call
+    // For this demo, we'll just use the username stored in the token
+    const username = token;
+    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    return users.find(user => user.username === username) || null;
+}
+
+// Protect page - redirect to login if not authenticated
+function protectPage() {
+    if (!isAuthenticated()) {
+        // Get current path to determine redirect
+        const currentPath = window.location.pathname;
+        const isLoginPage = currentPath.endsWith('index.html') || currentPath === '/' || currentPath.endsWith('/');
         
-        // Different menu for admin vs regular users
-        if (user.role === 'admin') {
-            userMenu.innerHTML = `
-                <div class="user-info">
-                    <i class="fas fa-user-shield"></i>
-                    <span class="user-greeting">Administrator: ${user.fullName}</span>
-                </div>
-                <div class="user-actions">
-                    <button id="admin-panel-button" class="menu-button">
-                        <i class="fas fa-cogs"></i> Admin Panel
-                    </button>
-                    <button id="manage-users-button" class="menu-button">
-                        <i class="fas fa-users-cog"></i> Manage Users
-                    </button>
-                    <button id="logout-button" class="menu-button logout-button">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            `;
-        } else {
-            userMenu.innerHTML = `
-                <div class="user-info">
-                    <i class="fas fa-user"></i>
-                    <span class="user-greeting">Welcome, ${user.fullName}</span>
-                </div>
-                <div class="user-actions">
-                    <button id="profile-button" class="menu-button">
-                        <i class="fas fa-user-edit"></i> My Profile
-                    </button>
-                    <button id="logout-button" class="menu-button logout-button">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            `;
+        if (!isLoginPage) {
+            window.location.href = currentPath.includes('/pages/') ? '../index.html' : 'index.html';
         }
+        return false;
+    }
+    return true;
+}
+}
+
+// Update UI with current user info
+function updateUserUI() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    // Update username in the header if element exists
+    const currentUserNameEl = document.getElementById('current-user-name');
+    if (currentUserNameEl) {
+        currentUserNameEl.textContent = user.username;
+    }
+    
+    // Show/hide admin elements based on user role
+    if (user.role === 'admin') {
+        document.body.classList.add('is-admin');
+    } else {
+        document.body.classList.remove('is-admin');
+    }
+    
+    // Update user dashboard elements if they exist
+    const userFullnameEl = document.getElementById('user-fullname');
+    const userPositionEl = document.getElementById('user-position');
+    const userIdEl = document.getElementById('user-id');
+    const userEmailEl = document.getElementById('user-email');
+    const userPhoneEl = document.getElementById('user-phone');
+    const userAddressEl = document.getElementById('user-address');
+    const userDobEl = document.getElementById('user-dob');
+    
+    if (userFullnameEl) userFullnameEl.textContent = user.fullname;
+    if (userPositionEl) userPositionEl.textContent = user.position;
+    if (userIdEl) userIdEl.textContent = 'Employee ID: ' + user.id;
+    if (userEmailEl) userEmailEl.textContent = user.email;
+    if (userPhoneEl) userPhoneEl.textContent = user.phone;
+    if (userAddressEl) userAddressEl.textContent = user.address;
+    if (userDobEl) userDobEl.textContent = user.dob;
+}
         
         header.appendChild(userMenu);
         
@@ -725,10 +750,33 @@ function logout() {
     location.reload();
 }
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication status
-    checkAuth();
+// Initialize the auth module
+function initAuth() {
+    initializeUsers();
+    
+    // Add logout event listener if the button exists
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
+    
+    // Check if this is a protected page and update UI
+    const isLoginPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname === '/' || 
+                        window.location.pathname.endsWith('/');
+    
+    if (!isLoginPage) {
+        if (protectPage()) {
+            updateUserUI();
+        }
+    }
+}
+
+// Initialize auth when DOM is loaded
+document.addEventListener('DOMContentLoaded', initAuth);
     
     // Tab switching
     const loginTabs = document.querySelectorAll('.login-tab');

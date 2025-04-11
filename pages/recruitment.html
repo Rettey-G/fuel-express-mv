@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment - Fuel Express HR Management</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/recruitment.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Home</a></li>
+                <li><a href="employee.html">Employee Details</a></li>
+                <li><a href="attendance.html">Time & Attendance</a></li>
+                <li><a href="leave.html">Leave Module</a></li>
+                <li><a href="payroll.html">Payroll Module</a></li>
+                <li><a href="recruitment.html" class="active">Recruitment</a></li>
+                <li><a href="reports.html">Reports</a></li>
+                <li><a href="user-dashboard.html">My Dashboard</a></li>
+                <li><a href="admin-dashboard.html" class="admin-only">Admin Panel</a></li>
+            </ul>
+            <div class="user-menu">
+                <button id="user-profile-btn" class="user-profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="current-user-name">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="user-dashboard.html"><i class="fas fa-user"></i> My Dashboard</a>
+                    <a href="#" id="change-password-btn"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-user-plus"></i> Recruitment Management</h2>
+            <div class="header-actions">
+                <button id="add-job-btn" class="btn primary"><i class="fas fa-plus"></i> Add New Job</button>
+                <button id="view-candidates-btn" class="btn secondary"><i class="fas fa-users"></i> View All Candidates</button>
+            </div>
+        </div>
+
+        <div class="recruitment-tabs">
+            <button class="tab-btn active" data-tab="open-positions">Open Positions</button>
+            <button class="tab-btn" data-tab="applications">Applications</button>
+            <button class="tab-btn" data-tab="interviews">Interviews</button>
+            <button class="tab-btn" data-tab="offers">Offers</button>
+        </div>
+
+        <div class="tab-content active" id="open-positions">
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="job-search" placeholder="Search job title, department...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-options">
+                    <select id="department-filter">
+                        <option value="">All Departments</option>
+                        <option value="it">IT</option>
+                        <option value="hr">HR</option>
+                        <option value="finance">Finance</option>
+                        <option value="operations">Operations</option>
+                        <option value="marketing">Marketing</option>
+                    </select>
+                    <select id="status-filter">
+                        <option value="">All Status</option>
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                        <option value="on-hold">On Hold</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="job-listings">
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3>Senior Software Developer</h3>
+                        <span class="job-status open">Open</span>
+                    </div>
+                    <div class="job-details">
+                        <p><i class="fas fa-building"></i> Department: IT</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Location: Headquarters</p>
+                        <p><i class="fas fa-calendar-alt"></i> Posted: April 5, 2025</p>
+                        <p><i class="fas fa-users"></i> Applications: 12</p>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn view-job"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn edit-job"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn delete-job"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3>HR Manager</h3>
+                        <span class="job-status open">Open</span>
+                    </div>
+                    <div class="job-details">
+                        <p><i class="fas fa-building"></i> Department: HR</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Location: Headquarters</p>
+                        <p><i class="fas fa-calendar-alt"></i> Posted: April 2, 2025</p>
+                        <p><i class="fas fa-users"></i> Applications: 8</p>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn view-job"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn edit-job"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn delete-job"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3>Financial Analyst</h3>
+                        <span class="job-status on-hold">On Hold</span>
+                    </div>
+                    <div class="job-details">
+                        <p><i class="fas fa-building"></i> Department: Finance</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Location: Branch Office</p>
+                        <p><i class="fas fa-calendar-alt"></i> Posted: March 25, 2025</p>
+                        <p><i class="fas fa-users"></i> Applications: 5</p>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn view-job"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn edit-job"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn delete-job"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="applications">
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="application-search" placeholder="Search candidate name, job...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-options">
+                    <select id="job-filter">
+                        <option value="">All Jobs</option>
+                        <option value="developer">Senior Software Developer</option>
+                        <option value="hr-manager">HR Manager</option>
+                        <option value="analyst">Financial Analyst</option>
+                    </select>
+                    <select id="application-status-filter">
+                        <option value="">All Status</option>
+                        <option value="new">New</option>
+                        <option value="screening">Screening</option>
+                        <option value="interview">Interview</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="application-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Applied For</th>
+                            <th>Date Applied</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sarah Johnson</td>
+                            <td>Senior Software Developer</td>
+                            <td>April 8, 2025</td>
+                            <td><span class="status new">New</span></td>
+                            <td>
+                                <button class="btn-icon view-application"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon schedule-interview"><i class="fas fa-calendar-plus"></i></button>
+                                <button class="btn-icon reject-application"><i class="fas fa-times-circle"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Michael Chen</td>
+                            <td>Senior Software Developer</td>
+                            <td>April 7, 2025</td>
+                            <td><span class="status screening">Screening</span></td>
+                            <td>
+                                <button class="btn-icon view-application"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon schedule-interview"><i class="fas fa-calendar-plus"></i></button>
+                                <button class="btn-icon reject-application"><i class="fas fa-times-circle"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Emily Rodriguez</td>
+                            <td>HR Manager</td>
+                            <td>April 5, 2025</td>
+                            <td><span class="status interview">Interview</span></td>
+                            <td>
+                                <button class="btn-icon view-application"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon schedule-interview"><i class="fas fa-calendar-plus"></i></button>
+                                <button class="btn-icon reject-application"><i class="fas fa-times-circle"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="interviews">
+            <div class="calendar-view">
+                <div class="calendar-header">
+                    <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="current-month">April 2025</h3>
+                    <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+                    
+                    <!-- Calendar days will be generated by JavaScript -->
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day">1</div>
+                    <div class="calendar-day">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day">8</div>
+                    <div class="calendar-day">9</div>
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day">11</div>
+                    <div class="calendar-day has-events">12
+                        <div class="event">Emily R. - HR Manager (10:00 AM)</div>
+                    </div>
+                    <div class="calendar-day">13</div>
+                    <div class="calendar-day">14</div>
+                    <div class="calendar-day has-events">15
+                        <div class="event">Michael C. - Sr. Developer (2:00 PM)</div>
+                    </div>
+                    <div class="calendar-day">16</div>
+                    <div class="calendar-day">17</div>
+                    <div class="calendar-day">18</div>
+                    <div class="calendar-day">19</div>
+                    <div class="calendar-day">20</div>
+                    <div class="calendar-day">21</div>
+                    <div class="calendar-day">22</div>
+                    <div class="calendar-day">23</div>
+                    <div class="calendar-day">24</div>
+                    <div class="calendar-day">25</div>
+                    <div class="calendar-day">26</div>
+                    <div class="calendar-day">27</div>
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day">29</div>
+                    <div class="calendar-day">30</div>
+                </div>
+            </div>
+            
+            <div class="upcoming-interviews">
+                <h3>Upcoming Interviews</h3>
+                <div class="interview-list">
+                    <div class="interview-item">
+                        <div class="interview-date">
+                            <div class="date-day">12</div>
+                            <div class="date-month">APR</div>
+                        </div>
+                        <div class="interview-details">
+                            <h4>Emily Rodriguez - HR Manager</h4>
+                            <p><i class="fas fa-clock"></i> 10:00 AM - 11:00 AM</p>
+                            <p><i class="fas fa-user"></i> Interviewer: John Smith</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Conference Room A</p>
+                        </div>
+                        <div class="interview-actions">
+                            <button class="btn reschedule-interview"><i class="fas fa-calendar-alt"></i> Reschedule</button>
+                            <button class="btn cancel-interview"><i class="fas fa-times"></i> Cancel</button>
+                        </div>
+                    </div>
+                    
+                    <div class="interview-item">
+                        <div class="interview-date">
+                            <div class="date-day">15</div>
+                            <div class="date-month">APR</div>
+                        </div>
+                        <div class="interview-details">
+                            <h4>Michael Chen - Senior Software Developer</h4>
+                            <p><i class="fas fa-clock"></i> 2:00 PM - 3:30 PM</p>
+                            <p><i class="fas fa-user"></i> Interviewer: David Wilson</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Conference Room B</p>
+                        </div>
+                        <div class="interview-actions">
+                            <button class="btn reschedule-interview"><i class="fas fa-calendar-alt"></i> Reschedule</button>
+                            <button class="btn cancel-interview"><i class="fas fa-times"></i> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="offers">
+            <div class="offers-list">
+                <div class="offer-card">
+                    <div class="offer-header">
+                        <h3>Robert Anderson</h3>
+                        <span class="offer-status pending">Pending</span>
+                    </div>
+                    <div class="offer-details">
+                        <p><i class="fas fa-briefcase"></i> Position: Senior Software Developer</p>
+                        <p><i class="fas fa-calendar-alt"></i> Offer Date: April 5, 2025</p>
+                        <p><i class="fas fa-calendar-check"></i> Response Due: April 12, 2025</p>
+                        <p><i class="fas fa-money-bill-wave"></i> Salary: $95,000/year</p>
+                    </div>
+                    <div class="offer-actions">
+                        <button class="btn view-offer"><i class="fas fa-eye"></i> View Details</button>
+                        <button class="btn edit-offer"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn send-reminder"><i class="fas fa-bell"></i> Send Reminder</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card">
+                    <div class="offer-header">
+                        <h3>Jessica Martinez</h3>
+                        <span class="offer-status accepted">Accepted</span>
+                    </div>
+                    <div class="offer-details">
+                        <p><i class="fas fa-briefcase"></i> Position: HR Manager</p>
+                        <p><i class="fas fa-calendar-alt"></i> Offer Date: March 28, 2025</p>
+                        <p><i class="fas fa-calendar-check"></i> Accepted: April 2, 2025</p>
+                        <p><i class="fas fa-calendar-day"></i> Start Date: May 1, 2025</p>
+                    </div>
+                    <div class="offer-actions">
+                        <button class="btn view-offer"><i class="fas fa-eye"></i> View Details</button>
+                        <button class="btn onboarding"><i class="fas fa-user-plus"></i> Start Onboarding</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card">
+                    <div class="offer-header">
+                        <h3>Thomas Lee</h3>
+                        <span class="offer-status declined">Declined</span>
+                    </div>
+                    <div class="offer-details">
+                        <p><i class="fas fa-briefcase"></i> Position: Financial Analyst</p>
+                        <p><i class="fas fa-calendar-alt"></i> Offer Date: March 20, 2025</p>
+                        <p><i class="fas fa-calendar-times"></i> Declined: March 27, 2025</p>
+                        <p><i class="fas fa-comment"></i> Reason: Accepted another offer</p>
+                    </div>
+                    <div class="offer-actions">
+                        <button class="btn view-offer"><i class="fas fa-eye"></i> View Details</button>
+                        <button class="btn archive-offer"><i class="fas fa-archive"></i> Archive</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // Auto-login for direct dashboard access
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'admin');
+        }
+    </script>
+    <script src="../js/sample-data.js"></script>
+    <script src="../js/recruitment-workflow.js"></script>
+    <script src="../js/recruitment.js"></script>
+    <script src="../js/logout.js"></script>
+</body>
+</html>

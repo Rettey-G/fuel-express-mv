@@ -25,6 +25,7 @@
                 <li><a href="payroll.html"><i class="fas fa-money-bill-wave"></i> Payroll</a></li>
                 <li><a href="recruitment.html"><i class="fas fa-user-plus"></i> Recruitment</a></li>
                 <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -127,6 +128,13 @@
         </div>
     </footer>
 
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // Auto-login for direct dashboard access
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'admin');
+        }
+    </script>
     <script src="../data/employees.js"></script>
     <script src="../js/attendance.js"></script>
     <script src="../js/activities.js"></script>

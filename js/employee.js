@@ -18,6 +18,22 @@ const searchBtn = document.getElementById('search-btn');
 const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 
+// Sample data initialization
+document.addEventListener('DOMContentLoaded', function() {
+    // Load sample data script
+    if (!document.querySelector('script[src="../js/sample-data.js"]')) {
+        const script = document.createElement('script');
+        script.src = '../js/sample-data.js';
+        document.body.appendChild(script);
+    }
+    
+    // Initialize department and division management
+    setupDepartmentDivisionManagement();
+    
+    // Setup event listeners
+    setupEventListeners();
+});
+
 // Get employees data
 let employeesData = [];
 
@@ -311,9 +327,13 @@ function showEmployeeDetails(employee) {
                 <span class="detail-label">Years of Service:</span>
                 <span>${yearsOfService}</span>
             </div>
-            <div class="detail-row">
+            <div class="detail-row salary-info" id="salary-info-row">
                 <span class="detail-label">Monthly Salary:</span>
-                <span>$${employee.salary.toLocaleString()}</span>
+                <span id="salary-display">Restricted</span>
+            </div>
+            <div class="detail-row bank-info" id="bank-info-row" style="display: none;">
+                <span class="detail-label">Bank Accounts:</span>
+                <div id="bank-accounts-display">Restricted</div>
             </div>
         </div>
         
@@ -333,6 +353,59 @@ function showEmployeeDetails(employee) {
             </div>
         </div>
     `;
+    
+    // Check if user is admin or authorized to view salary information
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+    const isAdmin = currentUser.role === 'admin';
+    const isHR = currentUser.role === 'hr';
+    const isFinance = currentUser.department === 'Finance';
+    
+    // Display salary information only for authorized users
+    if (isAdmin || isHR || isFinance) {
+        const salaryDisplay = document.getElementById('salary-display');
+        const bankInfoRow = document.getElementById('bank-info-row');
+        const bankAccountsDisplay = document.getElementById('bank-accounts-display');
+        
+        // Handle both old and new salary formats
+        if (employee.salary && typeof employee.salary === 'object') {
+            salaryDisplay.innerHTML = `
+                <div>USD: $${employee.salary.USD?.toLocaleString() || 'N/A'}</div>
+                <div>MVR: ₨${employee.salary.MVR?.toLocaleString() || 'N/A'}</div>
+            `;
+        } else {
+            salaryDisplay.textContent = `$${employee.salary?.toLocaleString() || 'N/A'}`;
+        }
+        
+        // Display bank account information
+        if (employee.bankAccounts) {
+            bankInfoRow.style.display = 'flex';
+            let bankAccountsHTML = '';
+            
+            if (employee.bankAccounts.USD) {
+                bankAccountsHTML += `
+                    <div class="bank-account">
+                        <strong>USD Account:</strong><br>
+                        ${employee.bankAccounts.USD.accountName}<br>
+                        ${employee.bankAccounts.USD.accountNumber}<br>
+                        ${employee.bankAccounts.USD.bankName}
+                    </div>
+                `;
+            }
+            
+            if (employee.bankAccounts.MVR) {
+                bankAccountsHTML += `
+                    <div class="bank-account">
+                        <strong>MVR Account:</strong><br>
+                        ${employee.bankAccounts.MVR.accountName}<br>
+                        ${employee.bankAccounts.MVR.accountNumber}<br>
+                        ${employee.bankAccounts.MVR.bankName}
+                    </div>
+                `;
+            }
+            
+            bankAccountsDisplay.innerHTML = bankAccountsHTML || 'No bank accounts found';
+        }
+    }
     
     // Show modal
     viewEmployeeModal.style.display = 'block';
@@ -501,8 +574,14 @@ function formatDate(dateString) {
 
 // Helper function to calculate years of service
 function calculateYearsOfService(hireDate) {
+    if (!hireDate) return 0;
+    
     const hire = new Date(hireDate);
     const today = new Date();
+    
+    // Setup department and division management
+    setupDepartmentDivisionManagement();
+    
     
     let years = today.getFullYear() - hire.getFullYear();
     

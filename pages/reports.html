@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Fuel Express HR Management</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/reports.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Home</a></li>
+                <li><a href="employee.html">Employee Details</a></li>
+                <li><a href="attendance.html">Time & Attendance</a></li>
+                <li><a href="leave.html">Leave Module</a></li>
+                <li><a href="payroll.html">Payroll Module</a></li>
+                <li><a href="recruitment.html">Recruitment</a></li>
+                <li><a href="reports.html" class="active">Reports</a></li>
+                <li><a href="user-dashboard.html">My Dashboard</a></li>
+                <li><a href="admin-dashboard.html" class="admin-only">Admin Panel</a></li>
+            </ul>
+            <div class="user-menu">
+                <button id="user-profile-btn" class="user-profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="current-user-name">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="user-dashboard.html"><i class="fas fa-user"></i> My Dashboard</a>
+                    <a href="#" id="change-password-btn"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-chart-bar"></i> Reports & Analytics</h2>
+            <div class="header-actions">
+                <button id="generate-report-btn" class="btn primary"><i class="fas fa-file-export"></i> Generate Report</button>
+                <button id="schedule-report-btn" class="btn secondary"><i class="fas fa-calendar-alt"></i> Schedule Reports</button>
+            </div>
+        </div>
+
+        <div class="reports-grid">
+            <!-- Employee Summary -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Employee Summary</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">150</div>
+                            <div class="stat-label">Total Employees</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">New Hires (30 days)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Terminations (30 days)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">8%</div>
+                            <div class="stat-label">Turnover Rate</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="employee-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Overview -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Attendance Overview</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Avg. Attendance</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5%</div>
+                            <div class="stat-label">Sick Leave</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3%</div>
+                            <div class="stat-label">Vacation</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Late Arrivals</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="attendance-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Distribution -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Department Distribution</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="chart-container">
+                        <canvas id="department-chart"></canvas>
+                    </div>
+                    <div class="department-list">
+                        <div class="department-item">
+                            <div class="department-name">IT</div>
+                            <div class="department-count">42 employees</div>
+                            <div class="department-bar">
+                                <div class="bar-fill" style="width: 28%"></div>
+                            </div>
+                            <div class="department-percent">28%</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">Operations</div>
+                            <div class="department-count">38 employees</div>
+                            <div class="department-bar">
+                                <div class="bar-fill" style="width: 25%"></div>
+                            </div>
+                            <div class="department-percent">25%</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">Sales</div>
+                            <div class="department-count">35 employees</div>
+                            <div class="department-bar">
+                                <div class="bar-fill" style="width: 23%"></div>
+                            </div>
+                            <div class="department-percent">23%</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">Finance</div>
+                            <div class="department-count">20 employees</div>
+                            <div class="department-bar">
+                                <div class="bar-fill" style="width: 13%"></div>
+                            </div>
+                            <div class="department-percent">13%</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">HR</div>
+                            <div class="department-count">15 employees</div>
+                            <div class="department-bar">
+                                <div class="bar-fill" style="width: 10%"></div>
+                            </div>
+                            <div class="department-percent">10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payroll Summary -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Payroll Summary</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">$487,500</div>
+                            <div class="stat-label">Monthly Payroll</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$3,250</div>
+                            <div class="stat-label">Avg. Salary</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$42,500</div>
+                            <div class="stat-label">Overtime Pay</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$15,200</div>
+                            <div class="stat-label">Bonuses</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="payroll-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leave Analysis -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Leave Analysis</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="chart-container">
+                        <canvas id="leave-chart"></canvas>
+                    </div>
+                    <div class="leave-stats">
+                        <div class="leave-type">
+                            <div class="leave-label">Sick Leave</div>
+                            <div class="leave-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <div class="progress-text">65% utilized</div>
+                            </div>
+                        </div>
+                        <div class="leave-type">
+                            <div class="leave-label">Vacation</div>
+                            <div class="leave-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 48%"></div>
+                                </div>
+                                <div class="progress-text">48% utilized</div>
+                            </div>
+                        </div>
+                        <div class="leave-type">
+                            <div class="leave-label">Personal</div>
+                            <div class="leave-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%"></div>
+                                </div>
+                                <div class="progress-text">35% utilized</div>
+                            </div>
+                        </div>
+                        <div class="leave-type">
+                            <div class="leave-label">Maternity/Paternity</div>
+                            <div class="leave-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 12%"></div>
+                                </div>
+                                <div class="progress-text">12% utilized</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recruitment Metrics -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Recruitment Metrics</h3>
+                    <div class="report-actions">
+                        <button class="btn-icon refresh-report"><i class="fas fa-sync-alt"></i></button>
+                        <button class="btn-icon export-report"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Open Positions</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">45</div>
+                            <div class="stat-label">Applications</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Interviews</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">18</div>
+                            <div class="stat-label">Time to Hire (days)</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="recruitment-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Generator Modal -->
+        <div id="report-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Generate Custom Report</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="report-type">Report Type</label>
+                        <select id="report-type">
+                            <option value="employee">Employee Report</option>
+                            <option value="attendance">Attendance Report</option>
+                            <option value="payroll">Payroll Report</option>
+                            <option value="leave">Leave Report</option>
+                            <option value="recruitment">Recruitment Report</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date-range">Date Range</label>
+                        <select id="date-range">
+                            <option value="this-month">This Month</option>
+                            <option value="last-month">Last Month</option>
+                            <option value="this-quarter">This Quarter</option>
+                            <option value="last-quarter">Last Quarter</option>
+                            <option value="this-year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="form-group date-inputs hidden">
+                        <div class="date-range-inputs">
+                            <div>
+                                <label for="start-date">Start Date</label>
+                                <input type="date" id="start-date">
+                            </div>
+                            <div>
+                                <label for="end-date">End Date</label>
+                                <input type="date" id="end-date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-format">Format</label>
+                        <select id="report-format">
+                            <option value="pdf">PDF</option>
+                            <option value="excel">Excel</option>
+                            <option value="csv">CSV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Include Sections</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Summary Statistics
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Charts & Graphs
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Detailed Data
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox"> Recommendations
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="generate-btn" class="btn primary">Generate Report</button>
+                    <button id="cancel-btn" class="btn secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // Auto-login for direct dashboard access
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'admin');
+        }
+    </script>
+    <script src="../js/reports.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

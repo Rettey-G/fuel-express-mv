@@ -1,42 +1,263 @@
 // Employee data for Fuel Express HR Management System
 const baseEmployees = [
     {
-        id: "FE0001",
-        fullName: "Arjun Mehra",
-        department: "Operations",
-        position: "Fleet Manager",
-        phone: "9876543210",
-        email: "arjun.mehra@fuelexpress.com",
-        hireDate: "2020-05-12",
-        salary: 4500,
+        empNo: "FEM001",
+        id: "A132309",
+        fullName: "Ahmed Shiaz",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "22-Oct-99",
+        mobile: "9991960",
+        department: "Admin",
+        position: "Managing Director",
+        workSite: "Office",
+        joinedDate: "21-Mar-11",
+        salary: {
+            MVR: 92400,
+            USD: 6000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Ahmed Shiaz",
+                accountNumber: "MVR9991960",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Ahmed Shiaz",
+                accountNumber: "USD9991960",
+                bankName: "International Bank"
+            }
+        },
         emergencyContact: {
-            name: "Priya Mehra",
+            name: "Aishath Faiza",
             relation: "Wife",
-            phone: "9876543200"
+            phone: "7622824"
         },
-        photo: "../img/employee-photos/arjun.jpg"
+        photo: "../img/employee-photos/ahmed-shiaz.jpg"
     },
     {
-        id: "FE0002",
-        fullName: "Neha Shah",
-        department: "HR",
-        position: "HR Executive",
-        phone: "9876509876",
-        email: "neha.shah@fuelexpress.com",
-        hireDate: "2022-08-21",
-        salary: 3800,
+        empNo: "FEM002",
+        id: "A312547",
+        fullName: "Ibrahim Jaleel",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "27-Feb-90",
+        mobile: "9931077",
+        department: "Operations",
+        position: "Chief Operating Officer",
+        workSite: "Office",
+        joinedDate: "01-Jan-20",
+        salary: {
+            MVR: 77000,
+            USD: 5000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Ibrahim Jaleel",
+                accountNumber: "MVR9931077",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Ibrahim Jaleel",
+                accountNumber: "USD9931077",
+                bankName: "International Bank"
+            }
+        },
         emergencyContact: {
-            name: "Rita Shah",
-            relation: "Mother",
-            phone: "9988776655"
+            name: "Aminath Faiza",
+            relation: "Wife",
+            phone: "7622935"
         },
-        photo: "../img/employee-photos/neha.jpg"
+        photo: "../img/employee-photos/ibrahim-jaleel.jpg"
     },
     {
-        id: "FE0003",
-        fullName: "Rajiv Kumar",
+        empNo: "FEM003",
+        id: "A158962",
+        fullName: "Aishath Fazaa Fazeel",
+        gender: "Female",
+        nationality: "Maldivian",
+        dateOfBirth: "09-Dec-99",
+        mobile: "7622824",
         department: "Finance",
-        position: "Finance Manager",
+        position: "Accountant",
+        workSite: "Office",
+        joinedDate: "04-Mar-21",
+        salary: {
+            MVR: 46200,
+            USD: 3000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Aishath Fazaa Fazeel",
+                accountNumber: "MVR7622824",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Aishath Fazaa Fazeel",
+                accountNumber: "USD7622824",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Ahmed Shiaz",
+            relation: "Husband",
+            phone: "9991960"
+        },
+        photo: "../img/employee-photos/aishath-fazaa.jpg"
+    },
+    {
+        empNo: "FEM004",
+        id: "A060935",
+        fullName: "Ahmed Hussain",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "22-May-70",
+        mobile: "7962250",
+        department: "Operations",
+        position: "Captain",
+        workSite: "Express 3",
+        joinedDate: "10-Aug-21",
+        salary: {
+            MVR: 38500,
+            USD: 2500
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Ahmed Hussain",
+                accountNumber: "MVR7962250",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Ahmed Hussain",
+                accountNumber: "USD7962250",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Mariyam Hussain",
+            relation: "Wife",
+            phone: "7962251"
+        },
+        photo: "../img/employee-photos/ahmed-hussain.jpg"
+    },
+    {
+        empNo: "FEM007",
+        id: "A133967",
+        fullName: "Ahmed Hasnain",
+        gender: "Male",
+        nationality: "Maldivian",
+        dateOfBirth: "22-May-70",
+        mobile: "7646454",
+        department: "Operations",
+        position: "Captain",
+        workSite: "Express 1",
+        joinedDate: "28-Jul-21",
+        salary: {
+            MVR: 38500,
+            USD: 2500
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Ahmed Hasnain",
+                accountNumber: "MVR7646454",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Ahmed Hasnain",
+                accountNumber: "USD7646454",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Fathimath Hasnain",
+            relation: "Wife",
+            phone: "7646455"
+        },
+        photo: "../img/employee-photos/ahmed-hasnain.jpg"
+    },
+    {
+        empNo: "FEM008",
+        id: "EL0110781",
+        fullName: "Mohamed Hamvi Uddin",
+        gender: "Male",
+        nationality: "Bangladeshi",
+        dateOfBirth: "07-Jan-81",
+        mobile: "7706226",
+        department: "Operations",
+        position: "Driver",
+        workSite: "Bowser",
+        joinedDate: "11-Jan-21",
+        salary: {
+            MVR: 15400,
+            USD: 1000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Mohamed Hamvi Uddin",
+                accountNumber: "MVR7706226",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Mohamed Hamvi Uddin",
+                accountNumber: "USD7706226",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Hamvi Uddin",
+            relation: "Father",
+            phone: "7706227"
+        },
+        photo: "../img/employee-photos/mohamed-hamvi.jpg"
+    },
+
+    {
+        empNo: "FEM009",
+        id: "ED0459449",
+        fullName: "Abdul Kalam Azad",
+        gender: "Male",
+        nationality: "Bangladeshi",
+        dateOfBirth: "15-Jul-85",
+        mobile: "9141139",
+        department: "Operations",
+        position: "Driver",
+        workSite: "Bowser",
+        joinedDate: "18-Oct-22",
+        salary: {
+            MVR: 15400,
+            USD: 1000
+        },
+        bankAccounts: {
+            MVR: {
+                accountName: "Abdul Kalam Azad",
+                accountNumber: "MVR9141139",
+                bankName: "Bank of Maldives"
+            },
+            USD: {
+                accountName: "Abdul Kalam Azad",
+                accountNumber: "USD9141139",
+                bankName: "International Bank"
+            }
+        },
+        emergencyContact: {
+            name: "Kalam Azad",
+            relation: "Father",
+            phone: "9141140"
+        },
+        photo: "../img/employee-photos/abdul-kalam.jpg"
+    },
+    {
+        empNo: "FEM010",
+        id: "L9299054",
+        fullName: "Dhabbu Rao Timothy",
+        gender: "Male",
+        nationality: "Indian",
+        dateOfBirth: "20-Apr-74",
+        mobile: "9651444",
+        department: "Operations",
+        position: "Driver",
+        workSite: "Bowser",
+        joinedDate: "16-May-22",
         phone: "8765432109",
         email: "rajiv.kumar@fuelexpress.com",
         hireDate: "2019-11-15",
@@ -49,7 +270,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/rajiv.jpg"
     },
     {
-        id: "FE0004",
+        id: "FE0009",
         fullName: "Priya Sharma",
         department: "IT",
         position: "Systems Administrator",
@@ -65,7 +286,7 @@ const baseEmployees = [
         photo: "../img/employee-photos/priya.jpg"
     },
     {
-        id: "FE0005",
+        id: "FE0010",
         fullName: "Vikram Singh",
         department: "Operations",
         position: "Station Supervisor",
@@ -81,7 +302,493 @@ const baseEmployees = [
         photo: "../img/employee-photos/vikram.jpg"
     },
     {
-        id: "FE0006",
+        id: "FE0011",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0012",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0013",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0014",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0015",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0016",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0017",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0018",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0019",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0020",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0021",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0022",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0023",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0024",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0025",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0026",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0027",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0028",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0029",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0030",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0031",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0032",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0033",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0034",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0035",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0036",
+        fullName: "Ananya Patel",
+        department: "Marketing",
+        position: "Marketing Specialist",
+        phone: "5432109876",
+        email: "ananya.patel@fuelexpress.com",
+        hireDate: "2022-01-15",
+        salary: 3600,
+        emergencyContact: {
+            name: "Rohan Patel",
+            relation: "Husband",
+            phone: "5432109800"
+        },
+        photo: "../img/employee-photos/ananya.jpg"
+    }
+
+    {
+        id: "FE0032",
+        fullName: "Neha Shah",
+        department: "HR",
+        position: "HR Executive",
+        phone: "9876509876",
+        email: "neha.shah@fuelexpress.com",
+        hireDate: "2022-08-21",
+        salary: 3800,
+        emergencyContact: {
+            name: "Rita Shah",
+            relation: "Mother",
+            phone: "9988776655"
+        },
+        photo: "../img/employee-photos/neha.jpg"
+    },
+    {
+        id: "FE0038",
+        fullName: "Rajiv Kumar",
+        department: "Finance",
+        position: "Finance Manager",
+        phone: "8765432109",
+        email: "rajiv.kumar@fuelexpress.com",
+        hireDate: "2019-11-15",
+        salary: 5200,
+        emergencyContact: {
+            name: "Anita Kumar",
+            relation: "Wife",
+            phone: "8765432100"
+        },
+        photo: "../img/employee-photos/rajiv.jpg"
+    },
+    {
+        id: "FE0040",
+        fullName: "Priya Sharma",
+        department: "IT",
+        position: "Systems Administrator",
+        phone: "7654321098",
+        email: "priya.sharma@fuelexpress.com",
+        hireDate: "2021-03-10",
+        salary: 4200,
+        emergencyContact: {
+            name: "Rahul Sharma",
+            relation: "Brother",
+            phone: "7654321000"
+        },
+        photo: "../img/employee-photos/priya.jpg"
+    },
+    {
+        id: "FE0041",
+        fullName: "Vikram Singh",
+        department: "Operations",
+        position: "Station Supervisor",
+        phone: "6543210987",
+        email: "vikram.singh@fuelexpress.com",
+        hireDate: "2020-07-22",
+        salary: 3900,
+        emergencyContact: {
+            name: "Meera Singh",
+            relation: "Wife",
+            phone: "6543210900"
+        },
+        photo: "../img/employee-photos/vikram.jpg"
+    },
+    {
+        id: "FE0042",
         fullName: "Ananya Patel",
         department: "Marketing",
         position: "Marketing Specialist",

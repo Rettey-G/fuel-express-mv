@@ -1,6 +1,19 @@
 // Payroll Module JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is authorized to access payroll information
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+    const isAdmin = currentUser.role === 'admin';
+    const isHR = currentUser.role === 'hr';
+    const isFinance = currentUser.department === 'Finance';
+    
+    // If not authorized, redirect to dashboard
+    if (!isAdmin && !isHR && !isFinance) {
+        alert('You do not have permission to access payroll information.');
+        window.location.href = '../dashboard.html';
+        return;
+    }
+    
     // Set current month and year in the selectors
     const currentDate = new Date();
     document.getElementById('payroll-month').value = currentDate.getMonth() + 1;
@@ -33,11 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize payroll with employee data
 function initializePayroll() {
-    // Check if employees data is available
-    if (typeof employees === 'undefined') {
-        console.error('Employee data not found. Make sure employees.js is loaded correctly.');
-        return;
+    // Load employees from data/employees.js
+    let employeeData = [];
+    
+    // Try to get employees from EmployeeManager in data/employees.js
+    if (typeof EmployeeManager !== 'undefined' && typeof EmployeeManager.getAll === 'function') {
+        employeeData = EmployeeManager.getAll();
+        console.log('Loaded employees from EmployeeManager:', employeeData.length);
+    } else {
+        // Fallback to sample data if available
+        if (typeof employees !== 'undefined') {
+            employeeData = employees;
+            console.log('Loaded employees from global variable:', employeeData.length);
+        } else {
+            console.error('Employee data not found. Make sure data/employees.js is loaded correctly.');
+            return;
+        }
     }
+    
+    // Store employees in a global variable for use in this module
+    window.payrollEmployees = employeeData;
     
     // Process and display payroll data
     processPayroll();
@@ -49,42 +77,102 @@ function processPayroll() {
     const year = parseInt(document.getElementById('payroll-year').value);
     const departmentFilter = document.getElementById('department-filter').value;
     
+    // Use payrollEmployees instead of employees
+    const employeeData = window.payrollEmployees || [];
+    
     // Filter employees by department if needed
-    let filteredEmployees = employees;
+    let filteredEmployees = employeeData;
     if (departmentFilter !== 'all') {
-        filteredEmployees = employees.filter(emp => emp.department === departmentFilter);
+        filteredEmployees = employeeData.filter(emp => emp.department === departmentFilter);
     }
     
     // Calculate payroll for each employee
     const payrollData = filteredEmployees.map(employee => {
+        // Handle both old and new salary formats
+        const basicSalaryUSD = employee.salary?.USD || employee.salary || 0;
+        const basicSalaryMVR = employee.salary?.MVR || (basicSalaryUSD * 15.4) || 0;
+        
         // Calculate allowances (40% of basic salary)
-        const allowances = employee.salary * 0.4;
+        const allowancesUSD = basicSalaryUSD * 0.4;
+        const allowancesMVR = basicSalaryMVR * 0.4;
         
         // Calculate deductions (15% of basic salary)
-        const deductions = employee.salary * 0.15;
+        const deductionsUSD = basicSalaryUSD * 0.15;
+        const deductionsMVR = basicSalaryMVR * 0.15;
         
         // Calculate net salary
-        const netSalary = employee.salary + allowances - deductions;
+        const netSalaryUSD = basicSalaryUSD + allowancesUSD - deductionsUSD;
+        const netSalaryMVR = basicSalaryMVR + allowancesMVR - deductionsMVR;
+        
+        // Get bank account details
+        const usdAccount = employee.bankAccounts?.USD?.accountNumber || 'N/A';
+        const mvrAccount = employee.bankAccounts?.MVR?.accountNumber || 'N/A';
+        const usdBankName = employee.bankAccounts?.USD?.bankName || 'N/A';
+        const mvrBankName = employee.bankAccounts?.MVR?.bankName || 'N/A';
         
         return {
             id: employee.id,
-            name: employee.name,
+            name: employee.fullName || employee.name,
             department: employee.department,
             designation: employee.position,
-            basicSalary: employee.salary,
-            allowances: allowances,
-            deductions: deductions,
-            netSalary: netSalary,
+            // Salary in both currencies
+            basicSalary: {
+                USD: basicSalaryUSD,
+                MVR: basicSalaryMVR
+            },
+            allowances: {
+                USD: allowancesUSD,
+                MVR: allowancesMVR
+            },
+            deductions: {
+                USD: deductionsUSD,
+                MVR: deductionsMVR
+            },
+            netSalary: {
+                USD: netSalaryUSD,
+                MVR: netSalaryMVR
+            },
+            // Bank account details
+            bankAccounts: {
+                USD: {
+                    accountNumber: usdAccount,
+                    bankName: usdBankName
+                },
+                MVR: {
+                    accountNumber: mvrAccount,
+                    bankName: mvrBankName
+                }
+            },
             // Additional details for payslip
             pan: 'ABCDE1234F', // Placeholder
-            bankAccount: '123456789012', // Placeholder
-            hra: employee.salary * 0.2,
-            conveyance: employee.salary * 0.1,
-            specialAllowance: employee.salary * 0.1,
-            pf: employee.salary * 0.08,
-            incomeTax: employee.salary * 0.05,
-            professionalTax: 200,
-            otherDeductions: employee.salary * 0.02
+            hra: {
+                USD: basicSalaryUSD * 0.2,
+                MVR: basicSalaryMVR * 0.2
+            },
+            conveyance: {
+                USD: basicSalaryUSD * 0.1,
+                MVR: basicSalaryMVR * 0.1
+            },
+            specialAllowance: {
+                USD: basicSalaryUSD * 0.1,
+                MVR: basicSalaryMVR * 0.1
+            },
+            pf: {
+                USD: basicSalaryUSD * 0.08,
+                MVR: basicSalaryMVR * 0.08
+            },
+            incomeTax: {
+                USD: basicSalaryUSD * 0.05,
+                MVR: basicSalaryMVR * 0.05
+            },
+            professionalTax: {
+                USD: 13,
+                MVR: 200
+            },
+            otherDeductions: {
+                USD: basicSalaryUSD * 0.02,
+                MVR: basicSalaryMVR * 0.02
+            }
         };
     });
     
@@ -107,15 +195,27 @@ function updatePayrollTable(payrollData) {
             <td>${employee.id}</td>
             <td>${employee.name}</td>
             <td>${employee.department}</td>
-            <td>₹${employee.basicSalary.toFixed(2)}</td>
-            <td>₹${employee.allowances.toFixed(2)}</td>
-            <td>₹${employee.deductions.toFixed(2)}</td>
-            <td>₹${employee.netSalary.toFixed(2)}</td>
+            <td>
+                <div class="currency-row">USD: $${employee.basicSalary.USD.toFixed(2)}</div>
+                <div class="currency-row">MVR: ₨${employee.basicSalary.MVR.toFixed(2)}</div>
+            </td>
+            <td>
+                <div class="currency-row">USD: $${employee.allowances.USD.toFixed(2)}</div>
+                <div class="currency-row">MVR: ₨${employee.allowances.MVR.toFixed(2)}</div>
+            </td>
+            <td>
+                <div class="currency-row">USD: $${employee.deductions.USD.toFixed(2)}</div>
+                <div class="currency-row">MVR: ₨${employee.deductions.MVR.toFixed(2)}</div>
+            </td>
+            <td>
+                <div class="currency-row">USD: $${employee.netSalary.USD.toFixed(2)}</div>
+                <div class="currency-row">MVR: ₨${employee.netSalary.MVR.toFixed(2)}</div>
+            </td>
             <td class="action-buttons">
-                <button class="action-btn view-btn" onclick="viewPayslip(${employee.id})">
+                <button class="action-btn view-btn" onclick="viewPayslip('${employee.id}')">
                     <i class="fas fa-eye"></i> View
                 </button>
-                <button class="action-btn edit-btn" onclick="editPayroll(${employee.id})">
+                <button class="action-btn edit-btn" onclick="editPayroll('${employee.id}')">
                     <i class="fas fa-edit"></i> Edit
                 </button>
             </td>
@@ -128,15 +228,36 @@ function updatePayrollTable(payrollData) {
 // Update summary statistics
 function updatePayrollSummary(payrollData) {
     const totalEmployees = payrollData.length;
-    const totalSalary = payrollData.reduce((sum, emp) => sum + emp.netSalary, 0);
-    const averageSalary = totalEmployees > 0 ? totalSalary / totalEmployees : 0;
-    const highestSalary = payrollData.length > 0 ? 
-        Math.max(...payrollData.map(emp => emp.netSalary)) : 0;
+    
+    // Calculate USD totals
+    const totalSalaryUSD = payrollData.reduce((sum, emp) => sum + emp.netSalary.USD, 0);
+    const averageSalaryUSD = totalEmployees > 0 ? totalSalaryUSD / totalEmployees : 0;
+    const highestSalaryUSD = payrollData.length > 0 ? 
+        Math.max(...payrollData.map(emp => emp.netSalary.USD)) : 0;
+    
+    // Calculate MVR totals
+    const totalSalaryMVR = payrollData.reduce((sum, emp) => sum + emp.netSalary.MVR, 0);
+    const averageSalaryMVR = totalEmployees > 0 ? totalSalaryMVR / totalEmployees : 0;
+    const highestSalaryMVR = payrollData.length > 0 ? 
+        Math.max(...payrollData.map(emp => emp.netSalary.MVR)) : 0;
     
     document.getElementById('total-employees').textContent = totalEmployees;
-    document.getElementById('total-salary').textContent = `₹${totalSalary.toFixed(2)}`;
-    document.getElementById('average-salary').textContent = `₹${averageSalary.toFixed(2)}`;
-    document.getElementById('highest-salary').textContent = `₹${highestSalary.toFixed(2)}`;
+    
+    // Update salary displays to show both currencies
+    document.getElementById('total-salary').innerHTML = `
+        <div class="currency-row">USD: $${totalSalaryUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${totalSalaryMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('average-salary').innerHTML = `
+        <div class="currency-row">USD: $${averageSalaryUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${averageSalaryMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('highest-salary').innerHTML = `
+        <div class="currency-row">USD: $${highestSalaryUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${highestSalaryMVR.toFixed(2)}</div>
+    `;
 }
 
 // Filter payroll by department
@@ -146,52 +267,123 @@ function filterPayrollByDepartment() {
 
 // View employee payslip
 function viewPayslip(employeeId) {
+    // Get the current payroll data
+    // Using the existing month and year values from the page
+    
     // Find employee in the payroll data
-    const employee = employees.find(emp => emp.id === employeeId);
+    const employeeData = window.payrollEmployees || [];
+    const employee = employeeData.find(emp => emp.id === employeeId);
     
     if (!employee) {
         alert('Employee not found!');
         return;
     }
     
-    // Calculate payroll details
-    const basicSalary = employee.salary;
-    const hra = basicSalary * 0.2;
-    const conveyance = basicSalary * 0.1;
-    const specialAllowance = basicSalary * 0.1;
-    const totalEarnings = basicSalary + hra + conveyance + specialAllowance;
+    // Handle both old and new salary formats
+    const basicSalaryUSD = employee.salary?.USD || employee.salary || 0;
+    const basicSalaryMVR = employee.salary?.MVR || (basicSalaryUSD * 15.4) || 0;
     
-    const pf = basicSalary * 0.08;
-    const incomeTax = basicSalary * 0.05;
-    const professionalTax = 200;
-    const otherDeductions = basicSalary * 0.02;
-    const totalDeductions = pf + incomeTax + professionalTax + otherDeductions;
+    // Calculate payroll details in USD
+    const hraUSD = basicSalaryUSD * 0.2;
+    const conveyanceUSD = basicSalaryUSD * 0.1;
+    const specialAllowanceUSD = basicSalaryUSD * 0.1;
+    const totalEarningsUSD = basicSalaryUSD + hraUSD + conveyanceUSD + specialAllowanceUSD;
     
-    const netSalary = totalEarnings - totalDeductions;
+    const pfUSD = basicSalaryUSD * 0.08;
+    const incomeTaxUSD = basicSalaryUSD * 0.05;
+    const professionalTaxUSD = 13; // Equivalent to 200 MVR
+    const otherDeductionsUSD = basicSalaryUSD * 0.02;
+    const totalDeductionsUSD = pfUSD + incomeTaxUSD + professionalTaxUSD + otherDeductionsUSD;
+    
+    const netSalaryUSD = totalEarningsUSD - totalDeductionsUSD;
+    
+    // Calculate payroll details in MVR
+    const hraMVR = basicSalaryMVR * 0.2;
+    const conveyanceMVR = basicSalaryMVR * 0.1;
+    const specialAllowanceMVR = basicSalaryMVR * 0.1;
+    const totalEarningsMVR = basicSalaryMVR + hraMVR + conveyanceMVR + specialAllowanceMVR;
+    
+    const pfMVR = basicSalaryMVR * 0.08;
+    const incomeTaxMVR = basicSalaryMVR * 0.05;
+    const professionalTaxMVR = 200;
+    const otherDeductionsMVR = basicSalaryMVR * 0.02;
+    const totalDeductionsMVR = pfMVR + incomeTaxMVR + professionalTaxMVR + otherDeductionsMVR;
+    
+    const netSalaryMVR = totalEarningsMVR - totalDeductionsMVR;
     
     // Update payslip modal with employee details
     document.getElementById('payslip-emp-id').textContent = employee.id;
-    document.getElementById('payslip-name').textContent = employee.name;
+    document.getElementById('payslip-name').textContent = employee.fullName || employee.name;
     document.getElementById('payslip-department').textContent = employee.department;
     document.getElementById('payslip-designation').textContent = employee.position;
-    document.getElementById('payslip-account').textContent = '123456789012'; // Placeholder
+    
+    // Display bank account details for both currencies
+    const usdAccount = employee.bankAccounts?.USD?.accountNumber || 'N/A';
+    const mvrAccount = employee.bankAccounts?.MVR?.accountNumber || 'N/A';
+    document.getElementById('payslip-account').innerHTML = `
+        <div class="currency-row">USD Account: ${usdAccount}</div>
+        <div class="currency-row">MVR Account: ${mvrAccount}</div>
+    `;
     document.getElementById('payslip-pan').textContent = 'ABCDE1234F'; // Placeholder
     
-       // Update salary details
-       document.getElementById('payslip-basic').textContent = `₹${basicSalary.toFixed(2)}`;
-       document.getElementById('payslip-hra').textContent = `₹${hra.toFixed(2)}`;
-       document.getElementById('payslip-conveyance').textContent = `₹${conveyance.toFixed(2)}`;
-       document.getElementById('payslip-special').textContent = `₹${specialAllowance.toFixed(2)}`;
-       document.getElementById('payslip-total-earnings').textContent = `₹${totalEarnings.toFixed(2)}`;
+    // Update salary details with both currencies
+    document.getElementById('payslip-basic').innerHTML = `
+        <div class="currency-row">USD: $${basicSalaryUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${basicSalaryMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-hra').innerHTML = `
+        <div class="currency-row">USD: $${hraUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${hraMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-conveyance').innerHTML = `
+        <div class="currency-row">USD: $${conveyanceUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${conveyanceMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-special').innerHTML = `
+        <div class="currency-row">USD: $${specialAllowanceUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${specialAllowanceMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-total-earnings').innerHTML = `
+        <div class="currency-row">USD: $${totalEarningsUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${totalEarningsMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-pf').innerHTML = `
+        <div class="currency-row">USD: $${pfUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${pfMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-tax').innerHTML = `
+        <div class="currency-row">USD: $${incomeTaxUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${incomeTaxMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-prof-tax').innerHTML = `
+        <div class="currency-row">USD: $${professionalTaxUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${professionalTaxMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-other-deductions').innerHTML = `
+        <div class="currency-row">USD: $${otherDeductionsUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${otherDeductionsMVR.toFixed(2)}</div>
+    `;
+    
+    document.getElementById('payslip-total-deductions').innerHTML = `
+        <div class="currency-row">USD: $${totalDeductionsUSD.toFixed(2)}</div>
+        <div class="currency-row">MVR: ₨${totalDeductionsMVR.toFixed(2)}</div>
+    `;
        
-       document.getElementById('payslip-pf').textContent = `₹${pf.toFixed(2)}`;
-       document.getElementById('payslip-tax').textContent = `₹${incomeTax.toFixed(2)}`;
-       document.getElementById('payslip-prof-tax').textContent = `₹${professionalTax.toFixed(2)}`;
-       document.getElementById('payslip-other-deductions').textContent = `₹${otherDeductions.toFixed(2)}`;
-       document.getElementById('payslip-total-deductions').textContent = `₹${totalDeductions.toFixed(2)}`;
-       
-       // Update net salary
-       document.getElementById('payslip-net-salary').textContent = `₹${netSalary.toFixed(2)}`;
+       // Update net salary with both currencies
+       document.getElementById('payslip-net-salary').innerHTML = `
+           <div class="currency-row">USD: $${netSalaryUSD.toFixed(2)}</div>
+           <div class="currency-row">MVR: ₨${netSalaryMVR.toFixed(2)}</div>
+           <div class="currency-row">USD Amount in Words: ${numberToWords(netSalaryUSD)} US Dollars</div>
+           <div class="currency-row">MVR Amount in Words: ${numberToWords(netSalaryMVR)} Maldivian Rufiyaa</div>
+       `;
        document.getElementById('payslip-amount-words').textContent = numberToWords(netSalary) + ' Rupees Only';
        
        // Update month and year

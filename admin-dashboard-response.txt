@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Fuel Express HR Management</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Dashboard</a></li>
+                <li><a href="admin-dashboard.html" class="active">Admin Panel</a></li>
+            </ul>
+            <div class="user-menu">
+                <button id="user-profile-btn" class="user-profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="current-user-name">Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="admin-header">
+            <h2><i class="fas fa-users-cog"></i> User Management Dashboard</h2>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3>Total Users</h3>
+                        <p id="total-users-count">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-shield"></i>
+                    <div class="stat-info">
+                        <h3>Admins</h3>
+                        <p id="admin-users-count">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user"></i>
+                    <div class="stat-info">
+                        <h3>Regular Users</h3>
+                        <p id="regular-users-count">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-clock"></i>
+                    <div class="stat-info">
+                        <h3>Active Today</h3>
+                        <p id="active-users-count">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="users-tab"><i class="fas fa-users"></i> Users</button>
+            <button class="tab-btn" data-tab="permissions-tab"><i class="fas fa-lock"></i> Permissions</button>
+            <button class="tab-btn" data-tab="activity-tab"><i class="fas fa-chart-line"></i> Activity Log</button>
+            <button class="tab-btn" data-tab="settings-tab"><i class="fas fa-cogs"></i> Settings</button>
+        </div>
+        
+        <div class="admin-content">
+            <!-- Users Tab -->
+            <div id="users-tab" class="tab-content active">
+                <div class="admin-grid">
+                    <!-- User List -->
+                    <div class="admin-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-list"></i> User List</h3>
+                            <div class="search-bar">
+                                <input type="text" id="user-search" placeholder="Search users...">
+                                <button id="search-btn"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="filter-options">
+                            <label>Filter by:</label>
+                            <select id="role-filter">
+                                <option value="all">All Roles</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                            <select id="status-filter">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            <button id="clear-filters" class="btn secondary small">Clear Filters</button>
+                        </div>
+                        <div class="user-list-container">
+                            <table class="user-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="select-all-users"></th>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-list">
+                                    <!-- Users will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <button id="prev-page" class="btn secondary small"><i class="fas fa-chevron-left"></i></button>
+                            <span id="page-info">Page 1 of 1</span>
+                            <button id="next-page" class="btn secondary small"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- User Actions -->
+                    <div class="admin-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-user-cog"></i> User Management</h3>
+                        </div>
+                        <div class="action-buttons">
+                            <button id="add-user-btn" class="btn primary"><i class="fas fa-user-plus"></i> Add User</button>
+                            <button id="edit-user-btn" class="btn secondary" disabled><i class="fas fa-user-edit"></i> Edit Selected</button>
+                            <button id="remove-user-btn" class="btn danger" disabled><i class="fas fa-user-minus"></i> Remove Selected</button>
+                        </div>
+                        
+                        <!-- User Details Section -->
+                        <div id="user-details" class="user-details hidden">
+                            <h4>Selected User Details</h4>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-data">
+                                    <p><strong>Username:</strong> <span id="detail-username">-</span></p>
+                                    <p><strong>Full Name:</strong> <span id="detail-fullname">-</span></p>
+                                    <p><strong>Email:</strong> <span id="detail-email">-</span></p>
+                                    <p><strong>Role:</strong> <span id="detail-role">-</span></p>
+                                    <p><strong>Status:</strong> <span id="detail-status">-</span></p>
+                                    <p><strong>Created:</strong> <span id="detail-created">-</span></p>
+                                    <p><strong>Last Login:</strong> <span id="detail-last-login">-</span></p>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button id="reset-password-btn" class="btn warning"><i class="fas fa-key"></i> Reset Password</button>
+                                <button id="toggle-status-btn" class="btn"><i class="fas fa-toggle-on"></i> <span id="toggle-status-text">Deactivate</span></button>
+                                <button id="view-permissions-btn" class="btn secondary"><i class="fas fa-lock"></i> View Permissions</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add/Edit User Form -->
+                        <div id="user-form" class="form-container hidden">
+                            <h4 id="form-title">Add New User</h4>
+                            <div class="form-group">
+                                <label for="user-username">Username*</label>
+                                <input type="text" id="user-username" required>
+                                <span class="error-message" id="username-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-fullname">Full Name*</label>
+                                <input type="text" id="user-fullname" required>
+                                <span class="error-message" id="fullname-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-email">Email*</label>
+                                <input type="email" id="user-email" required>
+                                <span class="error-message" id="email-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-password">Password*</label>
+                                <div class="password-input">
+                                    <input type="password" id="user-password" required>
+                                    <button type="button" id="toggle-password" class="toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <span class="error-message" id="password-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-confirm-password">Confirm Password*</label>
+                                <input type="password" id="user-confirm-password" required>
+                                <span class="error-message" id="confirm-password-error"></span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="user-role">Role*</label>
+                                    <select id="user-role" required>
+                                        <option value="user">Regular User</option>
+                                        <option value="admin">Administrator</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-status">Status</label>
+                                    <select id="user-status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Module Access</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-dashboard" checked disabled>
+                                        Dashboard
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-employees">
+                                        Employees
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-attendance">
+                                        Attendance
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-leave">
+                                        Leave
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-payroll">
+                                        Payroll
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-recruitment">
+                                        Recruitment
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="access-reports">
+                                        Reports
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" id="cancel-user-form" class="btn secondary">Cancel</button>
+                                <button type="button" id="submit-user-form" class="btn primary">Save User</button>
+                            </div>
+                        </div>
+
+                        <!-- Reset Password Form -->
+                        <div id="reset-password-form" class="form-container hidden">
+                            <h4>Reset User Password</h4>
+                            <div class="form-group">
+                                <label for="reset-user">Username</label>
+                                <input type="text" id="reset-user" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password*</label>
+                                <div class="password-input">
+                                    <input type="password" id="new-password" required>
+                                    <button type="button" id="toggle-new-password" class="toggle-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <span class="error-message" id="new-password-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password*</label>
+                                <input type="password" id="confirm-password" required>
+                                <span class="error-message" id="confirm-new-password-error"></span>
+                            </div>
+                            <div class="form-actions">
+                                <button id="cancel-reset-password" class="btn secondary">Cancel</button>
+                                <button id="submit-reset-password" class="btn primary">Reset Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Permissions Tab -->
+            <div id="permissions-tab" class="tab-content">
+                <div class="admin-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-lock"></i> Role Permissions</h3>
+                    </div>
+                    <div class="role-selector">
+                        <label for="select-role">Select Role:</label>
+                        <select id="select-role">
+                            <option value="admin">Administrator</option>
+                            <option value="user">Regular User</option>
+                        </select>
+                    </div>
+                    <div class="permissions-table-container">
+                        <table class="permissions-table">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>View</th>
+                                    <th>Create</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="permissions-list">
+                                <!-- Permissions will be loaded here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-actions">
+                        <button id="save-permissions" class="btn primary">Save Permissions</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Log Tab -->
+            <div id="activity-tab" class="tab-content">
+                <div class="admin-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-history"></i> User Activity Log</h3>
+                        <div class="filter-controls">
+                            <select id="activity-user-filter">
+                                <option value="all">All Users</option>
+                                <!-- Users will be loaded here dynamically -->
+                            </select>
+                            <select id="activity-type-filter">
+                                <option value="all">All Activities</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="create">Create</option>
+                                <option value="update">Update</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                            <div class="date-range">
+                                <label>From:</label>
+                                <input type="date" id="activity-date-from">
+                                <label>To:</label>
+                                <input type="date" id="activity-date-to">
+                            </div>
+                            <button id="apply-activity-filters" class="btn secondary small">Apply</button>
+                        </div>
+                    </div>
+                    <div class="activity-log-container">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>User</th>
+                                    <th>Activity</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activity-list">
+                                <!-- Activity logs will be loaded here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <button id="prev-activity-page" class="btn secondary small"><i class="fas fa-chevron-left"></i></button>
+                        <span id="activity-page-info">Page 1 of 1</span>
+                        <button id="next-activity-page" class="btn secondary small"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="admin-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-cogs"></i> System Settings</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="settings-section">
+                            <h4>Security Settings</h4>
+                            <div class="form-group">
+                                <label for="password-expiry">Password Expiry (days)</label>
+                                <input type="number" id="password-expiry" min="0" value="90">
+                                <small>Set to 0 for no expiry</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="min-password-length">Minimum Password Length</label>
+                                <input type="number" id="min-password-length" min="6" max="20" value="8">
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="require-special-chars" checked>
+                                    Require special characters in password
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="require-numbers" checked>
+                                    Require numbers in password
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="max-login-attempts">Max Login Attempts</label>
+                                <input type="number" id="max-login-attempts" min="3" max="10" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="lockout-duration">Account Lockout Duration (minutes)</label>
+                                <input type="number" id="lockout-duration" min="5" value="30">
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h4>Session Settings</h4>
+                            <div class="form-group">
+                                <label for="session-timeout">Session Timeout (minutes)</label>
+                                <input type="number" id="session-timeout" min="5" value="30">
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="remember-me-option" checked>
+                                    Allow "Remember Me" option
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button id="reset-settings" class="btn secondary">Reset to Defaults</button>
+                            <button id="save-settings" class="btn primary">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // Auto-login for direct dashboard access
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'admin');
+        }
+    </script>
+    <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>

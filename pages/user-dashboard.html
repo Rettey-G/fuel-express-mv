@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Fuel Express HR Management</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/user-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Home</a></li>
+                <li><a href="employee.html">Employee Details</a></li>
+                <li><a href="attendance.html">Time & Attendance</a></li>
+                <li><a href="leave.html">Leave Module</a></li>
+                <li><a href="payroll.html">Payroll Module</a></li>
+                <li><a href="user-dashboard.html" class="active">My Dashboard</a></li>
+                <li><a href="admin-dashboard.html" class="admin-only">Admin Panel</a></li>
+            </ul>
+            <div class="user-menu">
+                <button id="user-profile-btn" class="user-profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="current-user-name">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="user-dashboard.html"><i class="fas fa-user"></i> My Dashboard</a>
+                    <a href="#" id="change-password-btn"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="user-dashboard-header">
+            <h2>My Dashboard</h2>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h3 id="user-fullname">John Doe</h3>
+                    <p id="user-position">Software Developer</p>
+                    <p id="user-id">Employee ID: EMP-001</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Personal Information -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-id-card"></i> Personal Information</h3>
+                    <button class="edit-btn" id="edit-personal-info"><i class="fas fa-edit"></i></button>
+                </div>
+                <div class="card-content">
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value" id="user-email">john.doe@example.com</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Phone:</div>
+                        <div class="info-value" id="user-phone">+1 234 567 890</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Address:</div>
+                        <div class="info-value" id="user-address">123 Main St, City, Country</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Date of Birth:</div>
+                        <div class="info-value" id="user-dob">01/01/1990</div>
+                    </div>
+                </div>
+                <!-- Edit Form (Hidden by default) -->
+                <div class="edit-form hidden" id="personal-info-form">
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Phone</label>
+                        <input type="text" id="edit-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-address">Address</label>
+                        <textarea id="edit-address"></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button class="btn" id="save-personal-info">Save</button>
+                        <button class="btn secondary" id="cancel-personal-info">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Summary -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-check"></i> Attendance Summary</h3>
+                </div>
+                <div class="card-content">
+                    <div class="attendance-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="present-days">22</div>
+                            <div class="stat-label">Present</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="absent-days">3</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="leave-days">5</div>
+                            <div class="stat-label">Leave</div>
+                        </div>
+                    </div>
+                    <div class="attendance-chart">
+                        <canvas id="attendance-chart-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leave Balance -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-minus"></i> Leave Balance</h3>
+                </div>
+                <div class="card-content">
+                    <div class="leave-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="casual-leave">5</div>
+                            <div class="stat-label">Casual</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="sick-leave">7</div>
+                            <div class="stat-label">Sick</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="annual-leave">15</div>
+                            <div class="stat-label">Annual</div>
+                        </div>
+                    </div>
+                    <div class="leave-request-btn">
+                        <button class="btn" id="request-leave-btn">Request Leave</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Payslips -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Recent Payslips</h3>
+                </div>
+                <div class="card-content">
+                    <div class="payslip-list">
+                        <div class="payslip-item">
+                            <div class="payslip-date">March 2025</div>
+                            <div class="payslip-amount">$3,500.00</div>
+                            <a href="#" class="payslip-download"><i class="fas fa-download"></i></a>
+                        </div>
+                        <div class="payslip-item">
+                            <div class="payslip-date">February 2025</div>
+                            <div class="payslip-amount">$3,500.00</div>
+                            <a href="#" class="payslip-download"><i class="fas fa-download"></i></a>
+                        </div>
+                        <div class="payslip-item">
+                            <div class="payslip-date">January 2025</div>
+                            <div class="payslip-amount">$3,500.00</div>
+                            <a href="#" class="payslip-download"><i class="fas fa-download"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Change Modal -->
+        <div class="modal" id="password-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Change Password</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                        <div class="error-message" id="current-password-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                        <div class="error-message" id="new-password-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password" id="confirm-password">
+                        <div class="error-message" id="confirm-password-error"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="save-password">Save Changes</button>
+                    <button class="btn secondary" id="cancel-password">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/session-manager.js"></script>
+    <script>
+        // Auto-login for direct dashboard access
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'admin');
+        }
+    </script>
+    <script src="../js/user-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

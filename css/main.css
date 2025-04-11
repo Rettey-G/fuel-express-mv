@@ -365,3 +365,53 @@ nav a:hover, nav a.active {
         justify-content: center;
     }
 }
+
+.admin-only {
+    display: none;
+}
+
+/* Add this if not already present */
+.user-menu {
+    position: relative;
+    margin-left: 20px;
+}
+
+.user-profile-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+}
+
+.user-dropdown.active {
+    display: block;
+}
+
+.user-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.user-dropdown a:hover {
+    background: #f5f5f5;
+}

@@ -1,6 +1,43 @@
 // Main JavaScript for Fuel Express HR Management System
 
 document.addEventListener('DOMContentLoaded', function() {
+    const currentUser = JSON.parse(localStorage.getItem('fuel_express_current_user'));
+    const userNameElement = document.getElementById('current-user-name');
+    const userMenuBtn = document.getElementById('user-profile-btn');
+    const userDropdown = document.getElementById('user-dropdown');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Set user name and handle permissions
+    if (currentUser) {
+        userNameElement.textContent = currentUser.fullName || currentUser.username;
+        
+        // Hide admin-only features for regular users
+        if (currentUser.role !== 'admin') {
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+        }
+    } else {
+        window.location.href = 'index.html';
+    }
+
+    // Toggle dropdown
+    userMenuBtn.addEventListener('click', () => {
+        userDropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('active');
+        }
+    });
+
+    // Logout functionality
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('fuel_express_current_user');
+        window.location.href = 'index.html';
+    });
+
     // Initialize dashboard data
     updateDashboardCounts();
     renderDepartmentChart();
