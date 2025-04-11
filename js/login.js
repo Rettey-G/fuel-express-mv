@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const users = JSON.parse(localStorage.getItem('fuel_express_users') || '[]');
         const user = users.find(u => u.username === username && u.password === password);
         
+        // Inside the login success handler, update the redirect URL
         if (user) {
             // Store current user
             localStorage.setItem('fuel_express_current_user', JSON.stringify(user));
@@ -53,9 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             }, 1500);
-        } else {
+        }
+        else {
             document.getElementById('login-error').textContent = 'Invalid username or password';
             document.getElementById('login-error').style.display = 'block';
         }
