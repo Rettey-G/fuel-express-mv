@@ -853,3 +853,44 @@ function updateLeaveBalanceDisplay() {
     document.getElementById('family-leave-progress').style.width = 
         `${(balance.family.used / balance.family.total) * 100}%`;
 }
+
+// Cancel all leave requests
+function cancelAllLeaveRequests() {
+    try {
+        // Get all leave requests
+        const leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
+        
+        // Update all pending requests to 'cancelled'
+        const updatedRequests = leaveRequests.map(request => {
+            if (request.status === 'pending') {
+                return { ...request, status: 'cancelled' };
+            }
+            return request;
+        });
+        
+        // Save updated requests back to localStorage
+        localStorage.setItem('leaveRequests', JSON.stringify(updatedRequests));
+        
+        // Reload leave data to update the UI
+        loadLeaveData();
+        
+        // Update the calendar to reflect the changes
+        generateCalendar(selectedMonth, selectedYear);
+        
+        // Show success message
+        alert('All pending leave requests have been cancelled.');
+        
+        return true;
+    } catch (error) {
+        console.error('Error cancelling leave requests:', error);
+        alert('An error occurred while cancelling leave requests.');
+        return false;
+    }
+}
+
+// Initialize function to cancel all leave requests on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add this line to the existing DOMContentLoaded event listener
+    // or create a button to trigger this function
+    cancelAllLeaveRequests();
+});

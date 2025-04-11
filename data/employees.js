@@ -316,7 +316,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0012",
@@ -397,7 +397,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0017",
@@ -478,7 +478,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0022",
@@ -559,7 +559,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0027",
@@ -640,7 +640,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0032",
@@ -721,7 +721,7 @@ const baseEmployees = [
             phone: "5432109800"
         },
         photo: "../img/employee-photos/ananya.jpg"
-    }
+    },
 
     {
         id: "FE0032",
