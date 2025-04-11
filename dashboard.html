@@ -1,6 +1,174 @@
-<nav>
-    <ul>
-        <li><a href="dashboard.html" class="active">Home</a></li>
-        <!-- ... rest of navigation items ... -->
-    </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Express HR Management</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Fuel Express Logo" class="logo">
+            <h1>Fuel Express Pvt. Ltd.</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="pages/employee.html">Employee Details</a></li>
+                <li><a href="pages/attendance.html">Time & Attendance</a></li>
+                <li><a href="pages/leave.html">Leave Module</a></li>
+                <li><a href="pages/payroll.html">Payroll Module</a></li>
+                <li><a href="pages/recruitment.html">Recruitment</a></li>
+                <li><a href="pages/reports.html">Reports</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h2>Welcome to Fuel Express HR Management System</h2>
+            <p>Streamline your HR processes with our comprehensive management solution</p>
+            <div class="cta-buttons">
+                <a href="pages/employee.html" class="cta-button">Get Started</a>
+                <a href="#features" class="cta-button secondary">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="dashboard-summary">
+            <h2>HR Dashboard</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>Employees</h3>
+                    <p id="employee-count">150</p>
+                    <a href="pages/employee.html" class="btn">Manage</a>
+                </div>
+                <div class="card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Attendance</h3>
+                    <p id="attendance-today">85</p>
+                    <a href="pages/attendance.html" class="btn">Track</a>
+                </div>
+                <div class="card">
+                    <i class="fas fa-calendar-minus"></i>
+                    <h3>Leave Requests</h3>
+                    <p id="pending-leaves">2</p>
+                    <a href="pages/leave.html" class="btn">Review</a>
+                </div>
+                <div class="card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Payroll</h3>
+                    <p>Monthly</p>
+                    <a href="pages/payroll.html" class="btn">Process</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Employee Management</h3>
+                    <p>Maintain comprehensive employee records and information</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Time & Attendance</h3>
+                    <p>Track employee attendance and time-off efficiently</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-calendar-minus"></i></div>
+                    <h3>Leave Management</h3>
+                    <p>Streamline leave requests and approvals</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h3>Payroll Processing</h3>
+                    <p>Calculate salaries, bonuses, and deductions accurately</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>Recruitment</h3>
+                    <p>Post job openings and manage the hiring process</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Reports & Analytics</h3>
+                    <p>Generate insightful reports for better decision making</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quick-stats">
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <h3>Department Distribution</h3>
+                    <div id="dept-chart" class="chart-container">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <h3>Recent Activities</h3>
+                    <ul class="activity-list">
+                        <li><span class="time">Today, 9:30 AM</span> Attendance marked for 45 employees</li>
+                        <li><span class="time">Yesterday</span> 3 new leave applications received</li>
+                        <li><span class="time">Aug 15, 2023</span> Monthly payroll processed</li>
+                        <li><span class="time">Aug 10, 2023</span> New job posting for "Fuel Station Manager"</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-links">
+            <a href="pages/employee.html" class="feature-link">View All Employees</a>
+            <a href="pages/attendance.html" class="feature-link">View Attendance System</a>
+            <a href="pages/reports.html" class="feature-link">Generate Reports</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Fuel Express Pvt. Ltd.</h4>
+                <p>Your trusted partner in fuel distribution and management.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="pages/employee.html">Employees</a></li>
+                    <li><a href="pages/attendance.html">Attendance</a></li>
+                    <li><a href="pages/leave.html">Leave</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Fuel Street, Energy City</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                <p><i class="fas fa-envelope"></i> hr@fuelexpress.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Fuel Express Pvt. Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/index.js"></script>
+
+    <!-- Add this before the closing </div> of the main-content section -->
+    <div class="dashboard-row">
+        <div class="dashboard-card activity-container" id="recent-activities">
+            <!-- Activities will be loaded here by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Add this before the closing </body> tag -->
+    <script src="js/activities.js"></script>
+</body>
+</html>
