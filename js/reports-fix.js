@@ -154,7 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.addEventListener('click', function() {
                     const reportCard = this.closest('.report-card');
                     const reportTitle = reportCard.querySelector('h3').textContent;
-                    alert(`Exporting ${reportTitle} report...`);
+                    
+                    // Generate and download report
+                    downloadReport(reportTitle, 'PDF');
                 });
             });
             
@@ -374,10 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 document.getElementById('download-report').addEventListener('click', function() {
-                    alert(`Downloading ${reportType} report in ${reportFormat} format...`);
-                    setTimeout(() => {
-                        alert('Download complete!');
-                    }, 1500);
+                    downloadReport(reportType, reportFormat);
                 });
             }
             
@@ -399,6 +398,293 @@ document.addEventListener('DOMContentLoaded', function() {
                     reportModal.style.display = 'none';
                 }
             });
+            
+            // Function to download report
+            function downloadReport(reportTitle, format) {
+                try {
+                    // Show loading notification
+                    const notification = document.createElement('div');
+                    notification.className = 'download-notification';
+                    notification.innerHTML = `
+                        <div style="position: fixed; bottom: 20px; right: 20px; background-color: #2196F3; color: white; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 9999;">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i>
+                                <span>Preparing ${reportTitle} report for download...</span>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    // Simulate processing time
+                    setTimeout(() => {
+                        // Remove loading notification
+                        document.body.removeChild(notification);
+                        
+                        // Create sample data based on report type
+                        let data;
+                        let filename;
+                        
+                        switch(reportTitle) {
+                            case 'Employee Summary':
+                                data = generateEmployeeReportData();
+                                filename = 'employee_summary';
+                                break;
+                            case 'Attendance Overview':
+                                data = generateAttendanceReportData();
+                                filename = 'attendance_overview';
+                                break;
+                            case 'Department Distribution':
+                                data = generateDepartmentReportData();
+                                filename = 'department_distribution';
+                                break;
+                            case 'Payroll Summary':
+                                data = generatePayrollReportData();
+                                filename = 'payroll_summary';
+                                break;
+                            case 'Leave Analysis':
+                                data = generateLeaveReportData();
+                                filename = 'leave_analysis';
+                                break;
+                            case 'Comprehensive Report':
+                            default:
+                                data = generateComprehensiveReportData();
+                                filename = 'comprehensive_report';
+                                break;
+                        }
+                        
+                        // Format date for filename
+                        const date = new Date();
+                        const dateStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                        filename = `${filename}_${dateStr}`;
+                        
+                        // Create and download file based on format
+                        switch(format.toUpperCase()) {
+                            case 'CSV':
+                                downloadCSV(data, `${filename}.csv`);
+                                break;
+                            case 'EXCEL':
+                                downloadExcel(data, `${filename}.xlsx`);
+                                break;
+                            case 'PDF':
+                            default:
+                                downloadPDF(data, `${filename}.pdf`);
+                                break;
+                        }
+                        
+                        // Show success notification
+                        const successNotification = document.createElement('div');
+                        successNotification.className = 'success-notification';
+                        successNotification.innerHTML = `
+                            <div style="position: fixed; bottom: 20px; right: 20px; background-color: #4CAF50; color: white; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 9999;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+                                    <span>${reportTitle} report downloaded successfully!</span>
+                                </div>
+                            </div>
+                        `;
+                        document.body.appendChild(successNotification);
+                        
+                        // Remove success notification after 3 seconds
+                        setTimeout(() => {
+                            document.body.removeChild(successNotification);
+                        }, 3000);
+                        
+                    }, 1500); // Simulate processing time
+                } catch (error) {
+                    console.error('Error downloading report:', error);
+                    alert('An error occurred while downloading the report. Please try again.');
+                }
+            }
+            
+            // Function to download CSV
+            function downloadCSV(data, filename) {
+                // Convert data to CSV format
+                let csvContent = '';
+                
+                // Add headers
+                csvContent += Object.keys(data[0]).join(',') + '\n';
+                
+                // Add rows
+                data.forEach(row => {
+                    csvContent += Object.values(row).join(',') + '\n';
+                });
+                
+                // Create blob and download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            // Function to download Excel (simplified as CSV for demo)
+            function downloadExcel(data, filename) {
+                // In a real implementation, you would use a library like SheetJS
+                // For this demo, we'll just use CSV with an .xlsx extension
+                downloadCSV(data, filename);
+            }
+            
+            // Function to download PDF (simplified for demo)
+            function downloadPDF(data, filename) {
+                // In a real implementation, you would use a library like jsPDF
+                // For this demo, we'll create a simple HTML representation and print it
+                
+                // Create a hidden iframe for printing
+                const printFrame = document.createElement('iframe');
+                printFrame.style.position = 'fixed';
+                printFrame.style.right = '0';
+                printFrame.style.bottom = '0';
+                printFrame.style.width = '0';
+                printFrame.style.height = '0';
+                printFrame.style.border = '0';
+                
+                document.body.appendChild(printFrame);
+                
+                // Generate HTML content
+                const reportTitle = filename.split('_')[0].replace(/_/g, ' ');
+                const dateStr = new Date().toLocaleDateString();
+                
+                let htmlContent = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${reportTitle} Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            h1 { color: #1976d2; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                            th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                            th { background-color: #f2f2f2; }
+                            .header { display: flex; justify-content: space-between; align-items: center; }
+                            .date { color: #666; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>${reportTitle} Report</h1>
+                            <div class="date">Generated on: ${dateStr}</div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                `;
+                
+                // Add table headers
+                const headers = Object.keys(data[0]);
+                headers.forEach(header => {
+                    htmlContent += `<th>${header}</th>`;
+                });
+                
+                htmlContent += `
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                // Add table rows
+                data.forEach(row => {
+                    htmlContent += '<tr>';
+                    Object.values(row).forEach(value => {
+                        htmlContent += `<td>${value}</td>`;
+                    });
+                    htmlContent += '</tr>';
+                });
+                
+                htmlContent += `
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 30px; text-align: center; color: #666;">
+                            &copy; 2025 Fuel Express Pvt. Ltd. All Rights Reserved.
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Write content to iframe and print
+                const frameDoc = printFrame.contentWindow.document;
+                frameDoc.open();
+                frameDoc.write(htmlContent);
+                frameDoc.close();
+                
+                // Wait for content to load, then print
+                printFrame.onload = function() {
+                    printFrame.contentWindow.focus();
+                    printFrame.contentWindow.print();
+                    
+                    // Remove iframe after printing
+                    setTimeout(() => {
+                        document.body.removeChild(printFrame);
+                    }, 1000);
+                };
+            }
+            
+            // Generate sample data for reports
+            function generateEmployeeReportData() {
+                return [
+                    { 'Employee ID': 'EMP001', 'Name': 'John Smith', 'Department': 'IT', 'Position': 'Developer', 'Status': 'Active', 'Hire Date': '2023-01-15' },
+                    { 'Employee ID': 'EMP002', 'Name': 'Jane Doe', 'Department': 'HR', 'Position': 'Manager', 'Status': 'Active', 'Hire Date': '2022-05-20' },
+                    { 'Employee ID': 'EMP003', 'Name': 'Robert Johnson', 'Department': 'Finance', 'Position': 'Accountant', 'Status': 'Active', 'Hire Date': '2023-03-10' },
+                    { 'Employee ID': 'EMP004', 'Name': 'Sarah Williams', 'Department': 'Sales', 'Position': 'Representative', 'Status': 'Active', 'Hire Date': '2022-11-05' },
+                    { 'Employee ID': 'EMP005', 'Name': 'Michael Brown', 'Department': 'Operations', 'Position': 'Supervisor', 'Status': 'Active', 'Hire Date': '2023-02-18' }
+                ];
+            }
+            
+            function generateAttendanceReportData() {
+                return [
+                    { 'Date': '2025-04-01', 'Present': 145, 'Absent': 5, 'Late': 3, 'Attendance Rate': '96.7%' },
+                    { 'Date': '2025-04-02', 'Present': 142, 'Absent': 8, 'Late': 5, 'Attendance Rate': '94.7%' },
+                    { 'Date': '2025-04-03', 'Present': 147, 'Absent': 3, 'Late': 2, 'Attendance Rate': '98.0%' },
+                    { 'Date': '2025-04-04', 'Present': 140, 'Absent': 10, 'Late': 4, 'Attendance Rate': '93.3%' },
+                    { 'Date': '2025-04-05', 'Present': 138, 'Absent': 12, 'Late': 6, 'Attendance Rate': '92.0%' }
+                ];
+            }
+            
+            function generateDepartmentReportData() {
+                return [
+                    { 'Department': 'IT', 'Employees': 42, 'Percentage': '28%', 'Avg Salary': '$4,200' },
+                    { 'Department': 'Operations', 'Employees': 38, 'Percentage': '25%', 'Avg Salary': '$3,800' },
+                    { 'Department': 'Sales', 'Employees': 35, 'Percentage': '23%', 'Avg Salary': '$3,500' },
+                    { 'Department': 'Finance', 'Employees': 20, 'Percentage': '13%', 'Avg Salary': '$4,500' },
+                    { 'Department': 'HR', 'Employees': 15, 'Percentage': '10%', 'Avg Salary': '$3,900' }
+                ];
+            }
+            
+            function generatePayrollReportData() {
+                return [
+                    { 'Month': 'January', 'Total Payroll': '$465,000', 'Avg Salary': '$3,100', 'Bonuses': '$12,500', 'Deductions': '$45,000' },
+                    { 'Month': 'February', 'Total Payroll': '$470,000', 'Avg Salary': '$3,133', 'Bonuses': '$13,000', 'Deductions': '$45,500' },
+                    { 'Month': 'March', 'Total Payroll': '$475,000', 'Avg Salary': '$3,167', 'Bonuses': '$13,500', 'Deductions': '$46,000' },
+                    { 'Month': 'April', 'Total Payroll': '$480,000', 'Avg Salary': '$3,200', 'Bonuses': '$14,000', 'Deductions': '$46,500' },
+                    { 'Month': 'May', 'Total Payroll': '$485,000', 'Avg Salary': '$3,233', 'Bonuses': '$14,500', 'Deductions': '$47,000' },
+                    { 'Month': 'June', 'Total Payroll': '$487,500', 'Avg Salary': '$3,250', 'Bonuses': '$15,000', 'Deductions': '$47,500' }
+                ];
+            }
+            
+            function generateLeaveReportData() {
+                return [
+                    { 'Leave Type': 'Annual Leave', 'Days Taken': 120, 'Employees': 45, 'Avg Days/Employee': 2.7 },
+                    { 'Leave Type': 'Sick Leave', 'Days Taken': 45, 'Employees': 30, 'Avg Days/Employee': 1.5 },
+                    { 'Leave Type': 'Personal Leave', 'Days Taken': 30, 'Employees': 20, 'Avg Days/Employee': 1.5 },
+                    { 'Leave Type': 'Maternity Leave', 'Days Taken': 60, 'Employees': 2, 'Avg Days/Employee': 30.0 },
+                    { 'Leave Type': 'Other Leave', 'Days Taken': 15, 'Employees': 10, 'Avg Days/Employee': 1.5 }
+                ];
+            }
+            
+            function generateComprehensiveReportData() {
+                return [
+                    ...generateEmployeeReportData(),
+                    ...generateAttendanceReportData(),
+                    ...generateDepartmentReportData(),
+                    ...generatePayrollReportData(),
+                    ...generateLeaveReportData()
+                ];
+            }
             
             console.log('Report actions set up');
         } catch (error) {
