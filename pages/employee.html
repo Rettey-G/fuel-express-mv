@@ -55,12 +55,39 @@
                 <form id="employee-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="employee-id">Employee ID</label>
-                            <input type="text" id="employee-id" disabled>
+                            <label for="employee-no">Employee No (FEM)*</label>
+                            <input type="text" id="employee-no" required>
                         </div>
+                        <div class="form-group">
+                            <label for="national-id">National ID/Passport*</label>
+                            <input type="text" id="national-id" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="full-name">Full Name*</label>
                             <input type="text" id="full-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender*</label>
+                            <select id="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nationality">Nationality*</label>
+                            <input type="text" id="nationality" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-of-birth">Date of Birth*</label>
+                            <input type="date" id="date-of-birth" required>
                         </div>
                     </div>
                     
@@ -75,11 +102,29 @@
                                 <option value="IT">IT</option>
                                 <option value="Marketing">Marketing</option>
                                 <option value="Sales">Sales</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="position">Position*</label>
                             <input type="text" id="position" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="worksite">Work Site*</label>
+                            <select id="worksite" required>
+                                <option value="">Select Work Site</option>
+                                <option value="Office">Office</option>
+                                <option value="Station">Station</option>
+                                <option value="Bowser">Bowser</option>
+                                <option value="Field">Field</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="joined-date">Joined Date*</label>
+                            <input type="date" id="joined-date" required>
                         </div>
                     </div>
                     
@@ -94,22 +139,60 @@
                         </div>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="hire-date">Hire Date*</label>
-                            <input type="date" id="hire-date" required>
+                    <fieldset>
+                        <legend>Salary Information</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="salary-mvr">Monthly Salary (MVR)*</label>
+                                <input type="number" id="salary-mvr" min="0" step="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="salary-usd">Monthly Salary (USD)*</label>
+                                <input type="number" id="salary-usd" min="0" step="100" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="salary">Monthly Salary (USD)*</label>
-                            <input type="number" id="salary" min="0" step="100" required>
-                        </div>
-                    </div>
+                    </fieldset>
                     
                     <div class="form-group">
                         <label for="photo">Photo</label>
                         <input type="file" id="photo" accept="image/*">
                         <div id="photo-preview" class="photo-preview"></div>
                     </div>
+                    
+                    <fieldset>
+                        <legend>Bank Account Information</legend>
+                        <h4>MVR Account</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="mvr-account-name">Account Name*</label>
+                                <input type="text" id="mvr-account-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mvr-account-number">Account Number*</label>
+                                <input type="text" id="mvr-account-number" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mvr-bank-name">Bank Name*</label>
+                            <input type="text" id="mvr-bank-name" required value="Bank of Maldives">
+                        </div>
+                        
+                        <h4>USD Account</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="usd-account-name">Account Name*</label>
+                                <input type="text" id="usd-account-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="usd-account-number">Account Number*</label>
+                                <input type="text" id="usd-account-number" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="usd-bank-name">Bank Name*</label>
+                            <input type="text" id="usd-bank-name" required value="International Bank">
+                        </div>
+                    </fieldset>
                     
                     <fieldset>
                         <legend>Emergency Contact</legend>

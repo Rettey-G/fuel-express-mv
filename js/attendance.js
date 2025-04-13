@@ -53,14 +53,14 @@ function loadEmployeeOptions() {
         employeesData = window.employees;
     }
     
-    // Sort employees by ID
-    employeesData.sort((a, b) => a.id.localeCompare(b.id));
+    // Sort employees by empNo
+    employeesData.sort((a, b) => (a.empNo || '').localeCompare(b.empNo || ''));
     
     // Add options to select
     employeesData.forEach(employee => {
         const option = document.createElement('option');
-        option.value = employee.id;
-        option.textContent = `${employee.id} - ${employee.fullName}`;
+        option.value = employee.empNo || employee.id; // Use empNo as the value
+        option.textContent = `${employee.empNo || 'N/A'} - ${employee.fullName}`;
         employeeSelect.appendChild(option);
     });
 }
@@ -132,7 +132,7 @@ function loadSingleEmployeeTimesheet(employeeId, weekValue) {
     const timesheetHtml = `
         <div class="employee-timesheet">
             <div class="timesheet-title">
-                <i class="fas fa-user-clock"></i> Timesheet for ${employee.fullName} (${employee.id})
+                <i class="fas fa-user-clock"></i> Timesheet for ${employee.fullName} (${employee.empNo || 'N/A'})
             </div>
             <form id="timesheet-form">
                 <table class="timesheet">
@@ -141,12 +141,12 @@ function loadSingleEmployeeTimesheet(employeeId, weekValue) {
                             <th colspan="9">Weekly timesheet</th>
                         </tr>
                         <tr>
-                            <td colspan="3">EMPLOYEE: ${employee.fullName}</td>
+                            <td colspan="3">EMPLOYEE: ${employee.fullName} (${employee.empNo || 'N/A'})</td>
                             <td colspan="3">WEEK FROM: ${formatDate(dates[0])}</td>
                         </tr>
                         <tr>
                             <td colspan="3">SUPERVISOR: </td>
-                            <td colspan="3">REGULAR HRS: 8.00</td>
+                            <td colspan="3">WORKSITE: ${employee.workSite || 'Office'}</td>
                         </tr>
                         <tr>
                             <th>DATE</th>
@@ -189,11 +189,11 @@ function loadSingleEmployeeTimesheet(employeeId, weekValue) {
                             <td>HOURLY RATE</td>
                             <td>---</td>
                             <td>---</td>
-                            <td>$${(employee.salary / 160).toFixed(2)}</td>
-                            <td>$${((employee.salary / 160) * 1.5).toFixed(2)}</td>
-                            <td>$${(employee.salary / 160).toFixed(2)}</td>
-                            <td>$${(employee.salary / 160).toFixed(2)}</td>
-                            <td>$${(employee.salary / 160).toFixed(2)}</td>
+                            <td>$${(employee.salary?.MVR ? employee.salary.MVR / 160 : 0).toFixed(2)}</td>
+                            <td>$${(employee.salary?.MVR ? (employee.salary.MVR / 160) * 1.5 : 0).toFixed(2)}</td>
+                            <td>$${(employee.salary?.MVR ? employee.salary.MVR / 160 : 0).toFixed(2)}</td>
+                            <td>$${(employee.salary?.MVR ? employee.salary.MVR / 160 : 0).toFixed(2)}</td>
+                            <td>$${(employee.salary?.MVR ? employee.salary.MVR / 160 : 0).toFixed(2)}</td>
                             <td>---</td>
                         </tr>
                         <tr>
@@ -412,7 +412,7 @@ function calculateHours(employeeId, weekValue) {
     
     // Log activity
     if (window.EmployeeManager) {
-        window.EmployeeManager.logActivity(`Updated timesheet for ${employee.fullName} (${employee.id}) for week ${weekValue}`);
+        window.EmployeeManager.logActivity(`Updated timesheet for ${employee.fullName} (${employee.empNo || 'N/A'}) for week ${weekValue}`);
     }
 }
 // Load summary for all employees
@@ -435,6 +435,7 @@ function loadAllEmployeesSummary(weekValue) {
                     <th>Employee ID</th>
                     <th>Employee Name</th>
                     <th>Department</th>
+                    <th>Worksite</th>
                     <th>Regular Hours</th>
                     <th>Overtime</th>
                     <th>Sick Leave</th>
@@ -461,7 +462,7 @@ function loadAllEmployeesSummary(weekValue) {
     
     // Add row for each employee
     employeesData.forEach(employee => {
-        const storageKey = `attendance_${employee.id}_${weekValue}`;
+        const storageKey = `attendance_${employee.empNo || employee.id}_${weekValue}`;
         let employeeAttendance = JSON.parse(localStorage.getItem(storageKey)) || createEmptyAttendance(getWeekDates(weekValue));
         
         // Calculate present days (days with hours > 0)
@@ -480,9 +481,10 @@ function loadAllEmployeesSummary(weekValue) {
         
         summaryHtml += `
             <tr>
-                <td>${employee.id}</td>
+                <td>${employee.empNo || 'N/A'}</td>
                 <td>${employee.fullName}</td>
                 <td>${employee.department}</td>
+                <td>${employee.workSite || 'Office'}</td>
                 <td>${employeeAttendance.totals.regularHours.toFixed(2)}</td>
                 <td>${employeeAttendance.totals.overtime.toFixed(2)}</td>
                 <td>${employeeAttendance.totals.sick.toFixed(2)}</td>
@@ -490,7 +492,7 @@ function loadAllEmployeesSummary(weekValue) {
                 <td>${employeeAttendance.totals.holiday.toFixed(2)}</td>
                 <td>${employeeAttendance.totals.totalHours.toFixed(2)}</td>
                 <td>
-                    <button class="btn small-btn view-timesheet-btn" data-id="${employee.id}">
+                    <button class="btn small-btn view-timesheet-btn" data-id="${employee.empNo || employee.id}">
                         <i class="fas fa-eye"></i> View
                     </button>
                 </td>

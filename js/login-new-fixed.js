@@ -108,18 +108,11 @@ function initializeUsers() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Clear any existing login issues
-    if (localStorage.getItem('authToken') === 'admin') {
-        window.location.href = 'dashboard.html';
-        return;
-    }
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    
     // Initialize users
     initializeUsers();
-    
-    // Check if user is already logged in
-    if (localStorage.getItem('authToken')) {
-        window.location.href = 'dashboard.html';
-        return;
-    }
     
     // Tab switching
     const loginTabs = document.querySelectorAll('.login-tab');
@@ -163,7 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (username === 'admin' && password === 'admin123') {
             // Store admin auth token
             localStorage.setItem('authToken', 'admin');
-            localStorage.setItem('currentUser', JSON.stringify({
+            
+            // Create admin user with complete data structure
+            const adminUser = {
                 empNo: 'FEM000',
                 id: 'A000000',
                 fullName: 'Admin User',
@@ -172,6 +167,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 role: 'admin',
                 department: 'Management',
                 position: 'System Administrator',
+                gender: 'Male',
+                nationality: 'Maldivian',
+                dateOfBirth: '01-Jan-80',
+                mobile: '7777777',
+                workSite: 'Office',
+                joinedDate: '01-Jan-20',
                 salary: {
                     MVR: 100000,
                     USD: 6500
@@ -187,8 +188,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         accountNumber: 'USD0000000',
                         bankName: 'International Bank'
                     }
+                },
+                emergencyContact: {
+                    name: 'Emergency Contact',
+                    relation: 'Relative',
+                    phone: '7777778'
                 }
-            }));
+            };
+            
+            // Store admin user data
+            localStorage.setItem('currentUser', JSON.stringify(adminUser));
             
             // Show success message
             document.getElementById('login-success').textContent = 'Admin login successful! Redirecting...';
@@ -272,35 +281,47 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!isValid) return;
         
-        // Check if username or email already exists
+        // Get existing users
         const users = JSON.parse(localStorage.getItem('fuel_express_users') || '[]');
         
+        // Check if username already exists
         if (users.some(u => u.username === username)) {
             document.getElementById('signup-username-error').textContent = 'Username already exists';
             return;
         }
         
-        if (users.some(u => u.email === email)) {
-            document.getElementById('signup-email-error').textContent = 'Email already exists';
-            return;
-        }
-        
-        // Create new user
+        // Add new user
         const newUser = {
-            id: 'EMP-' + (100 + users.length),
-            fullname: fullName,
+            empNo: `FEM${(104 + users.length).toString()}`,
+            id: `A${Math.floor(100000 + Math.random() * 900000)}`,
+            fullName: fullName,
             email: email,
             username: username,
             password: password,
             role: 'user',
-            position: 'New Employee',
-            phone: '',
-            address: '',
-            dob: '',
-            createdAt: new Date().toISOString()
+            department: 'General',
+            position: 'Employee',
+            gender: 'Other',
+            nationality: 'Maldivian',
+            workSite: 'Office',
+            salary: {
+                MVR: 15400,
+                USD: 1000
+            },
+            bankAccounts: {
+                MVR: {
+                    accountName: fullName,
+                    accountNumber: `MVR${Math.floor(1000000 + Math.random() * 9000000)}`,
+                    bankName: 'Bank of Maldives'
+                },
+                USD: {
+                    accountName: fullName,
+                    accountNumber: `USD${Math.floor(1000000 + Math.random() * 9000000)}`,
+                    bankName: 'International Bank'
+                }
+            }
         };
         
-        // Add to users array
         users.push(newUser);
         localStorage.setItem('fuel_express_users', JSON.stringify(users));
         

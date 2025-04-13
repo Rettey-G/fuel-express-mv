@@ -44,6 +44,9 @@ header {
     background-color: white;
     box-shadow: var(--box-shadow);
     padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo-container {

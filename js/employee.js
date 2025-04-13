@@ -87,7 +87,7 @@ function createEmployeeCard(employee) {
     
     card.innerHTML = `
         <div class="employee-header-section">
-            <span class="employee-id">${employee.id}</span>
+            <span class="employee-id">${employee.empNo || 'N/A'}</span>
             <span class="employee-department">${employee.department}</span>
         </div>
         <img src="${photoSrc}" alt="${employee.fullName}" class="employee-photo" onerror="this.src='../img/employee-photos/default.jpg'">
@@ -95,15 +95,15 @@ function createEmployeeCard(employee) {
             <h3 class="employee-name">${employee.fullName}</h3>
             <p class="employee-position">${employee.position}</p>
             <div class="employee-details">
-                <p><i class="fas fa-phone"></i> ${employee.phone}</p>
-                <p><i class="fas fa-envelope"></i> ${employee.email || 'N/A'}</p>
-                <p><i class="fas fa-calendar"></i> Hired: ${formatDate(employee.hireDate)}</p>
+                <p><i class="fas fa-building"></i> Work Site: ${employee.workSite || 'N/A'}</p>
+                <p><i class="fas fa-venus-mars"></i> Gender: ${employee.gender || 'N/A'}</p>
+                <p><i class="fas fa-calendar"></i> Joined: ${employee.joinedDate || formatDate(employee.hireDate)}</p>
             </div>
         </div>
         <div class="employee-actions-btns">
-            <button class="action-btn view-btn" data-id="${employee.id}"><i class="fas fa-eye"></i> View</button>
-            <button class="action-btn edit-btn" data-id="${employee.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="action-btn delete-btn" data-id="${employee.id}"><i class="fas fa-trash"></i> Delete</button>
+            <button class="action-btn view-btn" data-id="${employee.empNo || employee.id}"><i class="fas fa-eye"></i> View</button>
+            <button class="action-btn edit-btn" data-id="${employee.empNo || employee.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="action-btn delete-btn" data-id="${employee.empNo || employee.id}"><i class="fas fa-trash"></i> Delete</button>
         </div>
     `;
     
@@ -248,17 +248,58 @@ function showAddEmployeeModal() {
 // Show edit employee modal
 function showEditEmployeeModal(employee) {
     // Set form values
-    document.getElementById('employee-id').value = employee.id;
-    document.getElementById('full-name').value = employee.fullName;
-    document.getElementById('department').value = employee.department;
-    document.getElementById('position').value = employee.position;
-    document.getElementById('phone').value = employee.phone;
+    document.getElementById('employee-no').value = employee.empNo || '';
+    document.getElementById('national-id').value = employee.id || '';
+    document.getElementById('full-name').value = employee.fullName || '';
+    document.getElementById('gender').value = employee.gender || '';
+    document.getElementById('nationality').value = employee.nationality || '';
+    document.getElementById('date-of-birth').value = formatDateForInput(employee.dateOfBirth) || '';
+    document.getElementById('department').value = employee.department || '';
+    document.getElementById('position').value = employee.position || '';
+    document.getElementById('worksite').value = employee.workSite || '';
+    document.getElementById('joined-date').value = formatDateForInput(employee.joinedDate) || employee.hireDate || '';
+    document.getElementById('phone').value = employee.mobile || employee.phone || '';
     document.getElementById('email').value = employee.email || '';
-    document.getElementById('hire-date').value = employee.hireDate;
-    document.getElementById('salary').value = employee.salary;
-    document.getElementById('emergency-name').value = employee.emergencyContact.name;
-    document.getElementById('emergency-relation').value = employee.emergencyContact.relation;
-    document.getElementById('emergency-phone').value = employee.emergencyContact.phone;
+    
+    // Set salary values
+    if (employee.salary && typeof employee.salary === 'object') {
+        document.getElementById('salary-mvr').value = employee.salary.MVR || 0;
+        document.getElementById('salary-usd').value = employee.salary.USD || 0;
+    } else {
+        document.getElementById('salary-mvr').value = employee.salary || 0;
+        document.getElementById('salary-usd').value = Math.round(employee.salary / 15.4) || 0; // Approximate conversion
+    }
+    
+    // Set bank account information
+    if (employee.bankAccounts) {
+        if (employee.bankAccounts.MVR) {
+            document.getElementById('mvr-account-name').value = employee.bankAccounts.MVR.accountName || employee.fullName || '';
+            document.getElementById('mvr-account-number').value = employee.bankAccounts.MVR.accountNumber || '';
+            document.getElementById('mvr-bank-name').value = employee.bankAccounts.MVR.bankName || 'Bank of Maldives';
+        }
+        
+        if (employee.bankAccounts.USD) {
+            document.getElementById('usd-account-name').value = employee.bankAccounts.USD.accountName || employee.fullName || '';
+            document.getElementById('usd-account-number').value = employee.bankAccounts.USD.accountNumber || '';
+            document.getElementById('usd-bank-name').value = employee.bankAccounts.USD.bankName || 'International Bank';
+        }
+    } else {
+        // Set default values for bank accounts
+        document.getElementById('mvr-account-name').value = employee.fullName || '';
+        document.getElementById('mvr-account-number').value = 'MVR' + (employee.mobile || employee.phone || '');
+        document.getElementById('mvr-bank-name').value = 'Bank of Maldives';
+        
+        document.getElementById('usd-account-name').value = employee.fullName || '';
+        document.getElementById('usd-account-number').value = 'USD' + (employee.mobile || employee.phone || '');
+        document.getElementById('usd-bank-name').value = 'International Bank';
+    }
+    
+    // Set emergency contact information
+    if (employee.emergencyContact) {
+        document.getElementById('emergency-name').value = employee.emergencyContact.name || '';
+        document.getElementById('emergency-relation').value = employee.emergencyContact.relation || '';
+        document.getElementById('emergency-phone').value = employee.emergencyContact.phone || '';
+    }
     
     // Show photo preview if available
     const photoPreview = document.getElementById('photo-preview');
@@ -276,6 +317,41 @@ function showEditEmployeeModal(employee) {
     
     // Set current employee
     currentEmployee = employee;
+}
+
+// Helper function to format date for input fields
+function formatDateForInput(dateString) {
+    if (!dateString) return '';
+    
+    // Check if it's already in YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return dateString;
+    }
+    
+    // Try to parse date in format like "15-Jul-85"
+    try {
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            const day = parts[0].padStart(2, '0');
+            
+            // Convert month name to number
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const monthIndex = monthNames.findIndex(m => parts[1].includes(m));
+            const month = monthIndex !== -1 ? (monthIndex + 1).toString().padStart(2, '0') : '01';
+            
+            // Handle 2-digit year
+            let year = parts[2];
+            if (year.length === 2) {
+                year = parseInt(year) > 50 ? '19' + year : '20' + year;
+            }
+            
+            return `${year}-${month}-${day}`;
+        }
+    } catch (error) {
+        console.error('Error parsing date:', error);
+    }
+    
+    return '';
 }
 
 // Show employee details
@@ -422,14 +498,33 @@ function showDeleteConfirmation(employee) {
 
 // Save employee (add or update)
 function saveEmployee() {
-    const employeeId = document.getElementById('employee-id').value;
+    const empNo = document.getElementById('employee-no').value;
+    const nationalId = document.getElementById('national-id').value;
     const fullName = document.getElementById('full-name').value;
+    const gender = document.getElementById('gender').value;
+    const nationality = document.getElementById('nationality').value;
+    const dateOfBirth = document.getElementById('date-of-birth').value;
     const department = document.getElementById('department').value;
     const position = document.getElementById('position').value;
+    const workSite = document.getElementById('worksite').value;
+    const joinedDate = document.getElementById('joined-date').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
-    const hireDate = document.getElementById('hire-date').value;
-    const salary = parseInt(document.getElementById('salary').value);
+    
+    // Get salary information in both currencies
+    const salaryMVR = parseInt(document.getElementById('salary-mvr').value);
+    const salaryUSD = parseInt(document.getElementById('salary-usd').value);
+    
+    // Get bank account information
+    const mvrAccountName = document.getElementById('mvr-account-name').value;
+    const mvrAccountNumber = document.getElementById('mvr-account-number').value;
+    const mvrBankName = document.getElementById('mvr-bank-name').value;
+    
+    const usdAccountName = document.getElementById('usd-account-name').value;
+    const usdAccountNumber = document.getElementById('usd-account-number').value;
+    const usdBankName = document.getElementById('usd-bank-name').value;
+    
+    // Get emergency contact information
     const emergencyName = document.getElementById('emergency-name').value;
     const emergencyRelation = document.getElementById('emergency-relation').value;
     const emergencyPhone = document.getElementById('emergency-phone').value;
@@ -453,14 +548,34 @@ function saveEmployee() {
     
     function completeEmployeeSave() {
         const employee = {
-            id: employeeId,
+            empNo: empNo,
+            id: nationalId,
             fullName: fullName,
+            gender: gender,
+            nationality: nationality,
+            dateOfBirth: dateOfBirth,
+            mobile: phone,
             department: department,
             position: position,
-            phone: phone,
+            workSite: workSite,
+            joinedDate: joinedDate,
             email: email,
-            hireDate: hireDate,
-            salary: salary,
+            salary: {
+                MVR: salaryMVR,
+                USD: salaryUSD
+            },
+            bankAccounts: {
+                MVR: {
+                    accountName: mvrAccountName,
+                    accountNumber: mvrAccountNumber,
+                    bankName: mvrBankName
+                },
+                USD: {
+                    accountName: usdAccountName,
+                    accountNumber: usdAccountNumber,
+                    bankName: usdBankName
+                }
+            },
             emergencyContact: {
                 name: emergencyName,
                 relation: emergencyRelation,

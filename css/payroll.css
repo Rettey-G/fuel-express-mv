@@ -1,5 +1,51 @@
 /* Payroll Module Specific Styles */
 
+/* Notification styles */
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 250px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.notification button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+/* Empty table message */
+.empty-table {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+}
+
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -112,6 +158,8 @@
 .data-table .action-buttons {
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .data-table .action-btn {

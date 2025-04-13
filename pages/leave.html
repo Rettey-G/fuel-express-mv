@@ -6,6 +6,7 @@
     <title>Leave Management - Fuel Express</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/leave.css">
+    <link rel="stylesheet" href="../css/leave-print.css">
     <link rel="stylesheet" href="../css/activities.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -63,6 +64,9 @@
                         <div class="leave-days-remaining">
                             <span id="annual-leave-remaining">30</span> days remaining
                         </div>
+                        <div class="leave-note">
+                            <small>30 days per year based on hire date</small>
+                        </div>
                     </div>
                 </div>
                 <div class="leave-card">
@@ -79,6 +83,46 @@
                         </div>
                         <div class="leave-days-remaining">
                             <span id="sick-leave-remaining">30</span> days remaining
+                        </div>
+                    </div>
+                </div>
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-calendar-day"></i>
+                        <h3>Off Days</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="offdays-used">0</span>/<span id="offdays-total">4</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="offdays-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="offdays-remaining">4</span> days per week
+                        </div>
+                        <div class="leave-note">
+                            <small>Weekly 4 days off</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="leave-card">
+                    <div class="leave-card-header">
+                        <i class="fas fa-flag"></i>
+                        <h3>Public Holidays</h3>
+                    </div>
+                    <div class="leave-card-body">
+                        <div class="leave-balance">
+                            <span id="ph-used">0</span>/<span id="ph-total">0</span>
+                        </div>
+                        <div class="leave-progress">
+                            <div class="progress-bar" id="ph-progress"></div>
+                        </div>
+                        <div class="leave-days-remaining">
+                            <span id="ph-remaining">0</span> days remaining
+                        </div>
+                        <div class="leave-note">
+                            <small>Based on actual public holidays</small>
                         </div>
                     </div>
                 </div>
@@ -246,11 +290,170 @@
                     </div>
                 </div>
                 
+                <div class="form-group">
+                    <label>Approval Workflow</label>
+                    <div class="approval-workflow">
+                        <div class="approval-step">
+                            <span class="step-number">1</span>
+                            <span class="step-name">Department Head</span>
+                        </div>
+                        <div class="approval-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="approval-step">
+                            <span class="step-number">2</span>
+                            <span class="step-name">HR Manager</span>
+                        </div>
+                        <div class="approval-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="approval-step">
+                            <span class="step-number">3</span>
+                            <span class="step-name">Final Approval</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="form-actions">
                     <button type="submit" class="btn primary-btn">Submit Request</button>
                     <button type="button" class="btn secondary-btn" id="cancel-request">Cancel</button>
+                    <button type="button" class="btn info-btn" id="preview-request" disabled>Preview & Print</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Printable Leave Request Modal -->
+    <div id="print-leave-modal" class="modal">
+        <div class="modal-content print-modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Leave Request Form</h3>
+            <div id="printable-leave-form" class="printable-form">
+                <div class="company-header">
+                    <img src="../img/logo.png" alt="Fuel Express Logo" class="print-logo">
+                    <div class="company-info">
+                        <h2>Fuel Express Pvt. Ltd.</h2>
+                        <p>HR Management System</p>
+                    </div>
+                </div>
+                
+                <h3 class="form-title">EMPLOYEE LEAVE REQUEST</h3>
+                
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Employee Name:</label>
+                            <span id="print-employee-name"></span>
+                        </div>
+                        <div class="form-field">
+                            <label>Employee ID:</label>
+                            <span id="print-employee-id"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Department:</label>
+                            <span id="print-department"></span>
+                        </div>
+                        <div class="form-field">
+                            <label>Position:</label>
+                            <span id="print-position"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Leave Type:</label>
+                            <span id="print-leave-type"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>From Date:</label>
+                            <span id="print-start-date"></span>
+                        </div>
+                        <div class="form-field">
+                            <label>To Date:</label>
+                            <span id="print-end-date"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Total Days:</label>
+                            <span id="print-total-days"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-field full-width">
+                            <label>Reason for Leave:</label>
+                            <p id="print-reason" class="reason-text"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section signatures">
+                    <div class="signature-row">
+                        <div class="signature-field">
+                            <div class="signature-line"></div>
+                            <label>Employee Signature</label>
+                            <p>Date: <span id="print-current-date"></span></p>
+                        </div>
+                        <div class="signature-field">
+                            <div class="signature-line"></div>
+                            <label>Department Head Signature</label>
+                            <p>Date: _______________</p>
+                        </div>
+                        <div class="signature-field">
+                            <div class="signature-line"></div>
+                            <label>HR Manager Signature</label>
+                            <p>Date: _______________</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section approval-section">
+                    <h4>Approval Status</h4>
+                    <div class="approval-row">
+                        <div class="approval-field">
+                            <label>Department Head:</label>
+                            <div class="approval-options">
+                                <div class="approval-option">
+                                    <input type="checkbox" disabled>
+                                    <label>Approved</label>
+                                </div>
+                                <div class="approval-option">
+                                    <input type="checkbox" disabled>
+                                    <label>Rejected</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="approval-field">
+                            <label>HR Manager:</label>
+                            <div class="approval-options">
+                                <div class="approval-option">
+                                    <input type="checkbox" disabled>
+                                    <label>Approved</label>
+                                </div>
+                                <div class="approval-option">
+                                    <input type="checkbox" disabled>
+                                    <label>Rejected</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-footer">
+                    <p>This is an official document of Fuel Express Pvt. Ltd. HR Management System</p>
+                    <p>Reference Number: <span id="print-reference"></span></p>
+                </div>
+            </div>
+            
+            <div class="form-actions print-actions">
+                <button type="button" class="btn primary-btn" id="print-form-btn"><i class="fas fa-print"></i> Print Form</button>
+                <button type="button" class="btn secondary-btn" id="close-print-modal">Close</button>
+            </div>
         </div>
     </div>
 

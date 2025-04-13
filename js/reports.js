@@ -1,81 +1,149 @@
 // Reports Module JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Global variables to store report data
+    let employeeData = [];
+    let attendanceData = {};
+    let leaveData = {};
+    let payrollData = {};
+    let departmentStats = {};
+    
+    // Check if user is authorized
+    checkUserAuthorization();
+    
+    // Load all data needed for reports
+    loadReportData();
+    
     // Initialize charts
-    initCharts();
+    setTimeout(() => {
+        initCharts();
+    }, 1000);
     
     // Set up event listeners
     setupEventListeners();
     
+    // Check user authorization
+    function checkUserAuthorization() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const isAdmin = currentUser.role === 'admin';
+        const isHR = currentUser.role === 'hr';
+        const isManager = currentUser.position && currentUser.position.toLowerCase().includes('manager');
+        
+        // If not authorized, redirect to dashboard
+        if (!isAdmin && !isHR && !isManager) {
+            showNotification('You do not have permission to access reports.', 'error');
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 2000);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Load all data needed for reports
+    function loadReportData() {
+        // Show loading indicators
+        document.querySelectorAll('.report-content').forEach(container => {
+            container.innerHTML = '<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> Loading data...</div>';
+        });
+        
+        // Load employee data
+        loadEmployeeData();
+        
+        // Load attendance data
+        loadAttendanceData();
+        
+        // Load leave data
+        loadLeaveData();
+        
+        // Load payroll data
+        loadPayrollData();
+    }
+    
     // Function to initialize all charts
     function initCharts() {
         // Employee Chart
-        const employeeCtx = document.getElementById('employee-chart').getContext('2d');
-        const employeeChart = new Chart(employeeCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Total Employees',
-                    data: [138, 142, 145, 148, 150, 150],
-                    borderColor: '#1976d2',
-                    backgroundColor: 'rgba(25, 118, 210, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 130
-                    }
+        initEmployeeChart();
+        
+        // Attendance Chart
+        initAttendanceChart();
+        
+        // Department Chart
+        initDepartmentChart();
+        
+        // Payroll Chart
+        initPayrollChart();
+        
+        // Leave Chart
+        initLeaveChart();
+        
+        // Update summary statistics
+        updateSummaryStats();
+    }
+    // Load employee data
+    function loadEmployeeData() {
+        try {
+            // Try to get employees from localStorage or EmployeeManager
+            if (typeof EmployeeManager !== 'undefined' && typeof EmployeeManager.getAll === 'function') {
+                employeeData = EmployeeManager.getAll();
+            } else if (localStorage.getItem('employees')) {
+                employeeData = JSON.parse(localStorage.getItem('employees'));
+            } else if (typeof baseEmployees !== 'undefined') {
+                employeeData = baseEmployees;
+            } else if (typeof employees !== 'undefined') {
+                employeeData = employees;
+            } else {
+                console.error('Employee data not found');
+                employeeData = [];
+            }
+            
+            // Calculate department statistics
+            calculateDepartmentStats();
+            
+            // Update employee summary
+            updateEmployeeSummary();
+            
+        } catch (error) {
+            console.error('Error loading employee data:', error);
+            showNotification('Error loading employee data', 'error');
+        }
+    }
+    
+    // Calculate department statistics
+    function calculateDepartmentStats() {
+        // Initialize department stats
+        departmentStats = {};
+        
+        // Count employees by department
+        employeeData.forEach(emp => {
+            const dept = emp.department || 'Other';
+            if (!departmentStats[dept]) {
+                departmentStats[dept] = {
+                    count: 0,
+                    totalSalary: 0
+                };
+            }
+            departmentStats[dept].count++;
+            
+            // Add salary data if available
+            if (emp.salary) {
+                if (typeof emp.salary === 'number') {
+                    departmentStats[dept].totalSalary += emp.salary;
+                } else if (emp.salary.USD) {
+                    departmentStats[dept].totalSalary += emp.salary.USD;
                 }
             }
         });
         
-        // Attendance Chart
-        const attendanceCtx = document.getElementById('attendance-chart').getContext('2d');
-        const attendanceChart = new Chart(attendanceCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                datasets: [{
-                    label: 'Present',
-                    data: [140, 142, 138, 145, 135],
-                    backgroundColor: '#4caf50'
-                }, {
-                    label: 'Absent',
-                    data: [10, 8, 12, 5, 15],
-                    backgroundColor: '#f44336'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        stacked: false
-                    },
-                    x: {
-                        stacked: false
-                    }
-                }
-            }
+        // Calculate percentages
+        const totalEmployees = employeeData.length;
+        Object.keys(departmentStats).forEach(dept => {
+            departmentStats[dept].percentage = (departmentStats[dept].count / totalEmployees) * 100;
+            departmentStats[dept].avgSalary = departmentStats[dept].count > 0 ? 
+                departmentStats[dept].totalSalary / departmentStats[dept].count : 0;
         });
+    }
         
         // Department Chart
         const departmentCtx = document.getElementById('department-chart').getContext('2d');

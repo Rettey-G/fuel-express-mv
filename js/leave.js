@@ -306,9 +306,9 @@ function submitLeaveRequest() {
     let employee = null;
     if (window.EmployeeManager) {
         const employees = window.EmployeeManager.getAll();
-        employee = employees.find(emp => emp.id === employeeId);
+        employee = employees.find(emp => emp.empNo === employeeId || emp.id === employeeId);
     } else if (window.employees) {
-        employee = window.employees.find(emp => emp.id === employeeId);
+        employee = window.employees.find(emp => emp.empNo === employeeId || emp.id === employeeId);
     }
     
     if (!employee) {
@@ -343,15 +343,23 @@ function submitLeaveRequest() {
     const leaveRequest = {
         id: Date.now().toString(),
         employeeId: employeeId,
+        empNo: employee.empNo || 'N/A',
         employeeName: employee.fullName,
+        department: employee.department || 'N/A',
+        position: employee.position || 'N/A',
         leaveType: leaveType,
         startDate: startDate,
         endDate: endDate,
         days: diffDays,
         reason: reason,
         status: 'pending',
+        approvalStatus: {
+            departmentHead: { status: 'pending', date: null, comment: '' },
+            hrManager: { status: 'pending', date: null, comment: '' }
+        },
         additionalData: additionalData,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        referenceNumber: `LR-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
     };
     
     // Save leave request
@@ -382,6 +390,12 @@ function submitLeaveRequest() {
     
     // Show success message
     alert('Leave request submitted successfully');
+    
+    // Enable preview button
+    document.getElementById('preview-request').disabled = false;
+    document.getElementById('preview-request').addEventListener('click', function() {
+        showPrintableLeaveRequest(leaveRequest.id);
+    });
 }
 
 // Add a new holiday
@@ -722,9 +736,9 @@ function getLeaveBalance(employeeId) {
     let employee = null;
     if (window.EmployeeManager) {
         const employees = window.EmployeeManager.getAll();
-        employee = employees.find(emp => emp.id === employeeId);
+        employee = employees.find(emp => emp.empNo === employeeId || emp.id === employeeId);
     } else if (window.employees) {
-        employee = window.employees.find(emp => emp.id === employeeId);
+        employee = window.employees.find(emp => emp.empNo === employeeId || emp.id === employeeId);
     }
     
     if (!employee) {
@@ -732,17 +746,19 @@ function getLeaveBalance(employeeId) {
             annual: { total: 30, used: 0, remaining: 30 },
             sick: { total: 30, used: 0, remaining: 30 },
             emergency: { total: 10, used: 0, remaining: 10 },
-            family: { total: 30, used: 0, remaining: 30 }
+            family: { total: 30, used: 0, remaining: 30 },
+            offdays: { total: 4, used: 0, remaining: 4 },
+            publicHoliday: { total: getPublicHolidaysCount(), used: 0, remaining: getPublicHolidaysCount() }
         };
     }
     
-    // Calculate annual leave based on hire date
-    const hireDate = new Date(employee.hireDate);
+    // Calculate annual leave based on joined date
+    const joinDate = parseCustomDate(employee.joinedDate);
     const today = new Date();
-    const yearsEmployed = Math.floor((today - hireDate) / (365.25 * 24 * 60 * 60 * 1000));
+    const yearsEmployed = calculateYearsEmployed(joinDate, today);
     
     // 30 days per year of employment
-    const annualLeaveTotal = Math.min(30, yearsEmployed * 30);
+    const annualLeaveTotal = 30; // Always 30 days per year
     
     // Get leave usage from localStorage
     const leaveUsage = JSON.parse(localStorage.getItem(`leaveUsage_${employeeId}`)) || {
@@ -751,6 +767,9 @@ function getLeaveBalance(employeeId) {
         emergency: 0,
         family: 0
     };
+    
+    // Get public holidays count
+    const publicHolidaysCount = getPublicHolidaysCount();
     
     return {
         annual: {
@@ -772,6 +791,16 @@ function getLeaveBalance(employeeId) {
             total: 30,
             used: leaveUsage.family || 0,
             remaining: 30 - (leaveUsage.family || 0)
+        },
+        offdays: {
+            total: 4,
+            used: leaveUsage.offdays || 0,
+            remaining: 4 - (leaveUsage.offdays || 0)
+        },
+        publicHoliday: {
+            total: publicHolidaysCount,
+            used: leaveUsage.publicHoliday || 0,
+            remaining: publicHolidaysCount - (leaveUsage.publicHoliday || 0)
         }
     };
 }
@@ -783,7 +812,9 @@ function updateLeaveUsage(employeeId, leaveType, days) {
         annual: 0,
         sick: 0,
         emergency: 0,
-        family: 0
+        family: 0,
+        offdays: 0,
+        publicHoliday: 0
     };
     
     // Update usage
@@ -819,6 +850,16 @@ function updateLeaveBalanceDisplay() {
         document.getElementById('family-leave-remaining').textContent = '30';
         document.getElementById('family-leave-progress').style.width = '0%';
         
+        document.getElementById('offdays-total').textContent = '4';
+        document.getElementById('offdays-used').textContent = '0';
+        document.getElementById('offdays-remaining').textContent = '4';
+        document.getElementById('offdays-progress').style.width = '0%';
+        
+        document.getElementById('ph-total').textContent = getPublicHolidaysCount().toString();
+        document.getElementById('ph-used').textContent = '0';
+        document.getElementById('ph-remaining').textContent = getPublicHolidaysCount().toString();
+        document.getElementById('ph-progress').style.width = '0%';
+        
         return;
     }
     
@@ -852,6 +893,20 @@ function updateLeaveBalanceDisplay() {
     document.getElementById('family-leave-remaining').textContent = balance.family.remaining;
     document.getElementById('family-leave-progress').style.width = 
         `${(balance.family.used / balance.family.total) * 100}%`;
+    
+    // Update off days
+    document.getElementById('offdays-total').textContent = balance.offdays.total;
+    document.getElementById('offdays-used').textContent = balance.offdays.used;
+    document.getElementById('offdays-remaining').textContent = balance.offdays.remaining;
+    document.getElementById('offdays-progress').style.width = 
+        `${(balance.offdays.used / balance.offdays.total) * 100}%`;
+    
+    // Update public holidays
+    document.getElementById('ph-total').textContent = balance.publicHoliday.total;
+    document.getElementById('ph-used').textContent = balance.publicHoliday.used;
+    document.getElementById('ph-remaining').textContent = balance.publicHoliday.remaining;
+    document.getElementById('ph-progress').style.width = 
+        `${(balance.publicHoliday.used / balance.publicHoliday.total) * 100}%`;
 }
 
 // Cancel all leave requests
@@ -894,3 +949,108 @@ document.addEventListener('DOMContentLoaded', function() {
     // or create a button to trigger this function
     cancelAllLeaveRequests();
 });
+
+// Helper function to parse custom date format (DD-MMM-YY)
+function parseCustomDate(dateString) {
+    if (!dateString) return new Date();
+    
+    const months = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+    
+    const parts = dateString.split('-');
+    if (parts.length !== 3) return new Date();
+    
+    const day = parseInt(parts[0], 10);
+    const month = months[parts[1]] || 0;
+    let year = parseInt(parts[2], 10);
+    
+    // Handle 2-digit year
+    if (year < 100) {
+        year += year < 50 ? 2000 : 1900;
+    }
+    
+    return new Date(year, month, day);
+}
+
+// Helper function to calculate years employed
+function calculateYearsEmployed(joinDate, currentDate) {
+    const millisecondsPerYear = 365.25 * 24 * 60 * 60 * 1000;
+    const yearsEmployed = Math.floor((currentDate - joinDate) / millisecondsPerYear);
+    return Math.max(0, yearsEmployed);
+}
+
+// Helper function to get public holidays count
+function getPublicHolidaysCount() {
+    const holidays = JSON.parse(localStorage.getItem('public_holidays')) || [];
+    const currentYear = new Date().getFullYear();
+    
+    // Filter holidays for the current year
+    const currentYearHolidays = holidays.filter(holiday => {
+        const holidayDate = new Date(holiday.date);
+        return holidayDate.getFullYear() === currentYear;
+    });
+    
+    return currentYearHolidays.length;
+}
+
+// Function to show printable leave request form
+function showPrintableLeaveRequest(requestId) {
+    // Get leave requests
+    const leaveRequests = JSON.parse(localStorage.getItem('leaveRequests')) || [];
+    const request = leaveRequests.find(req => req.id === requestId);
+    
+    if (!request) {
+        alert('Leave request not found');
+        return;
+    }
+    
+    // Get print modal
+    const printModal = document.getElementById('print-leave-modal');
+    
+    // Fill in the form with request data
+    document.getElementById('print-employee-name').textContent = request.employeeName;
+    document.getElementById('print-employee-id').textContent = request.empNo;
+    document.getElementById('print-department').textContent = request.department;
+    document.getElementById('print-position').textContent = request.position;
+    
+    // Format leave type
+    const formattedLeaveType = request.leaveType.charAt(0).toUpperCase() + request.leaveType.slice(1) + ' Leave';
+    document.getElementById('print-leave-type').textContent = formattedLeaveType;
+    
+    // Format dates
+    const startDate = new Date(request.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const endDate = new Date(request.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('print-start-date').textContent = startDate;
+    document.getElementById('print-end-date').textContent = endDate;
+    document.getElementById('print-total-days').textContent = request.days;
+    
+    // Set reason
+    document.getElementById('print-reason').textContent = request.reason;
+    
+    // Set current date for employee signature
+    const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('print-current-date').textContent = currentDate;
+    
+    // Set reference number
+    document.getElementById('print-reference').textContent = request.referenceNumber || `LR-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    
+    // Show modal
+    printModal.style.display = 'block';
+    
+    // Add print button event listener
+    document.getElementById('print-form-btn').addEventListener('click', function() {
+        window.print();
+    });
+    
+    // Add close button event listener
+    document.getElementById('close-print-modal').addEventListener('click', function() {
+        printModal.style.display = 'none';
+    });
+    
+    // Close when clicking on X
+    printModal.querySelector('.close-btn').addEventListener('click', function() {
+        printModal.style.display = 'none';
+    });
+}
