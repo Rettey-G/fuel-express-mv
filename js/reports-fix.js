@@ -445,6 +445,22 @@ document.addEventListener('DOMContentLoaded', function() {
                                 data = generateLeaveReportData();
                                 filename = 'leave_analysis';
                                 break;
+                            case 'Master Staff List':
+                                data = generateMasterStaffListData();
+                                filename = 'master_staff_list';
+                                break;
+                            case 'Leave Balance Report':
+                                data = generateLeaveBalanceReportData();
+                                filename = 'leave_balance_report';
+                                break;
+                            case 'Attendance Department-wise':
+                                data = generateAttendanceDepartmentWiseData();
+                                filename = 'attendance_department_wise';
+                                break;
+                            case 'Leave Taken Report':
+                                data = generateLeaveTakenReportData();
+                                filename = 'leave_taken_report';
+                                break;
                             case 'Comprehensive Report':
                             default:
                                 data = generateComprehensiveReportData();
@@ -683,6 +699,70 @@ document.addEventListener('DOMContentLoaded', function() {
                     ...generateDepartmentReportData(),
                     ...generatePayrollReportData(),
                     ...generateLeaveReportData()
+                ];
+            }
+            
+            // Generate Master Staff List report data
+            function generateMasterStaffListData() {
+                return [
+                    { 'Staff ID': 'EMP001', 'Full Name': 'John Smith', 'Department': 'IT', 'Position': 'Senior Developer', 'Join Date': '2022-05-15', 'Contact Number': '+960 771-2345', 'Email': 'john.smith@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP002', 'Full Name': 'Jane Doe', 'Department': 'HR', 'Position': 'HR Manager', 'Join Date': '2021-08-10', 'Contact Number': '+960 772-3456', 'Email': 'jane.doe@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP003', 'Full Name': 'Ahmed Hassan', 'Department': 'Operations', 'Position': 'Station Manager', 'Join Date': '2022-01-20', 'Contact Number': '+960 773-4567', 'Email': 'ahmed.hassan@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP004', 'Full Name': 'Fathimath Ali', 'Department': 'Finance', 'Position': 'Accountant', 'Join Date': '2023-03-05', 'Contact Number': '+960 774-5678', 'Email': 'fathimath.ali@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP005', 'Full Name': 'Ibrahim Naseer', 'Department': 'Sales', 'Position': 'Sales Executive', 'Join Date': '2022-11-12', 'Contact Number': '+960 775-6789', 'Email': 'ibrahim.naseer@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP006', 'Full Name': 'Mariyam Waheed', 'Department': 'IT', 'Position': 'System Administrator', 'Join Date': '2023-01-15', 'Contact Number': '+960 776-7890', 'Email': 'mariyam.waheed@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP007', 'Full Name': 'Hussein Ahmed', 'Department': 'Operations', 'Position': 'Fuel Attendant', 'Join Date': '2023-02-28', 'Contact Number': '+960 777-8901', 'Email': 'hussein.ahmed@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP008', 'Full Name': 'Aishath Latheef', 'Department': 'Admin', 'Position': 'Administrative Assistant', 'Join Date': '2022-07-10', 'Contact Number': '+960 778-9012', 'Email': 'aishath.latheef@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP009', 'Full Name': 'Mohamed Rasheed', 'Department': 'Maintenance', 'Position': 'Maintenance Supervisor', 'Join Date': '2021-12-05', 'Contact Number': '+960 779-0123', 'Email': 'mohamed.rasheed@fuelexpress.mv', 'Status': 'Active' },
+                    { 'Staff ID': 'EMP010', 'Full Name': 'Aminath Shafia', 'Department': 'Customer Service', 'Position': 'Customer Service Representative', 'Join Date': '2023-04-01', 'Contact Number': '+960 770-1234', 'Email': 'aminath.shafia@fuelexpress.mv', 'Status': 'Active' }
+                ];
+            }
+            
+            // Generate Leave Balance Report data
+            function generateLeaveBalanceReportData() {
+                return [
+                    { 'Staff ID': 'EMP001', 'Name': 'John Smith', 'Department': 'IT', 'Annual Leave Balance': 18, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 33 },
+                    { 'Staff ID': 'EMP002', 'Name': 'Jane Doe', 'Department': 'HR', 'Annual Leave Balance': 15, 'Sick Leave Balance': 10, 'Personal Leave Balance': 2, 'Total Leave Balance': 27 },
+                    { 'Staff ID': 'EMP003', 'Name': 'Ahmed Hassan', 'Department': 'Operations', 'Annual Leave Balance': 20, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 35 },
+                    { 'Staff ID': 'EMP004', 'Name': 'Fathimath Ali', 'Department': 'Finance', 'Annual Leave Balance': 22, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 37 },
+                    { 'Staff ID': 'EMP005', 'Name': 'Ibrahim Naseer', 'Department': 'Sales', 'Annual Leave Balance': 12, 'Sick Leave Balance': 8, 'Personal Leave Balance': 1, 'Total Leave Balance': 21 },
+                    { 'Staff ID': 'EMP006', 'Name': 'Mariyam Waheed', 'Department': 'IT', 'Annual Leave Balance': 24, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 39 },
+                    { 'Staff ID': 'EMP007', 'Name': 'Hussein Ahmed', 'Department': 'Operations', 'Annual Leave Balance': 23, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 38 },
+                    { 'Staff ID': 'EMP008', 'Name': 'Aishath Latheef', 'Department': 'Admin', 'Annual Leave Balance': 18, 'Sick Leave Balance': 10, 'Personal Leave Balance': 2, 'Total Leave Balance': 30 },
+                    { 'Staff ID': 'EMP009', 'Name': 'Mohamed Rasheed', 'Department': 'Maintenance', 'Annual Leave Balance': 16, 'Sick Leave Balance': 9, 'Personal Leave Balance': 2, 'Total Leave Balance': 27 },
+                    { 'Staff ID': 'EMP010', 'Name': 'Aminath Shafia', 'Department': 'Customer Service', 'Annual Leave Balance': 25, 'Sick Leave Balance': 12, 'Personal Leave Balance': 3, 'Total Leave Balance': 40 }
+                ];
+            }
+            
+            // Generate Attendance Department-wise Report data
+            function generateAttendanceDepartmentWiseData() {
+                return [
+                    { 'Department': 'IT', 'Date': '2025-04-01', 'Total Staff': 15, 'Present': 14, 'Absent': 1, 'Late': 2, 'Attendance %': '93.3%', 'Department Head': 'Yoosuf Naseem', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Operations', 'Date': '2025-04-01', 'Total Staff': 25, 'Present': 23, 'Absent': 2, 'Late': 3, 'Attendance %': '92.0%', 'Department Head': 'Ali Waheed', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Finance', 'Date': '2025-04-01', 'Total Staff': 10, 'Present': 10, 'Absent': 0, 'Late': 1, 'Attendance %': '100.0%', 'Department Head': 'Hawwa Zahir', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Sales', 'Date': '2025-04-01', 'Total Staff': 18, 'Present': 16, 'Absent': 2, 'Late': 1, 'Attendance %': '88.9%', 'Department Head': 'Ibrahim Rasheed', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'HR', 'Date': '2025-04-01', 'Total Staff': 8, 'Present': 8, 'Absent': 0, 'Late': 0, 'Attendance %': '100.0%', 'Department Head': 'Jane Doe', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Admin', 'Date': '2025-04-01', 'Total Staff': 5, 'Present': 5, 'Absent': 0, 'Late': 1, 'Attendance %': '100.0%', 'Department Head': 'Fathimath Naseem', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Maintenance', 'Date': '2025-04-01', 'Total Staff': 12, 'Present': 11, 'Absent': 1, 'Late': 2, 'Attendance %': '91.7%', 'Department Head': 'Mohamed Rasheed', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Customer Service', 'Date': '2025-04-01', 'Total Staff': 10, 'Present': 9, 'Absent': 1, 'Late': 0, 'Attendance %': '90.0%', 'Department Head': 'Aminath Shafia', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'IT', 'Date': '2025-04-02', 'Total Staff': 15, 'Present': 15, 'Absent': 0, 'Late': 1, 'Attendance %': '100.0%', 'Department Head': 'Yoosuf Naseem', 'HR Signature': 'Jane Doe' },
+                    { 'Department': 'Operations', 'Date': '2025-04-02', 'Total Staff': 25, 'Present': 22, 'Absent': 3, 'Late': 2, 'Attendance %': '88.0%', 'Department Head': 'Ali Waheed', 'HR Signature': 'Jane Doe' }
+                ];
+            }
+            
+            // Generate Leave Taken Report data
+            function generateLeaveTakenReportData() {
+                return [
+                    { 'Staff ID': 'EMP001', 'Name': 'John Smith', 'Department': 'IT', 'Leave Type': 'Annual Leave', 'Start Date': '2025-03-10', 'End Date': '2025-03-15', 'Duration (Days)': 6, 'Status': 'Approved', 'Approved By': 'Yoosuf Naseem' },
+                    { 'Staff ID': 'EMP002', 'Name': 'Jane Doe', 'Department': 'HR', 'Leave Type': 'Sick Leave', 'Start Date': '2025-03-22', 'End Date': '2025-03-23', 'Duration (Days)': 2, 'Status': 'Approved', 'Approved By': 'Ahmed Rasheed' },
+                    { 'Staff ID': 'EMP003', 'Name': 'Ahmed Hassan', 'Department': 'Operations', 'Leave Type': 'Personal Leave', 'Start Date': '2025-04-05', 'End Date': '2025-04-05', 'Duration (Days)': 1, 'Status': 'Approved', 'Approved By': 'Ali Waheed' },
+                    { 'Staff ID': 'EMP004', 'Name': 'Fathimath Ali', 'Department': 'Finance', 'Leave Type': 'Annual Leave', 'Start Date': '2025-04-10', 'End Date': '2025-04-14', 'Duration (Days)': 5, 'Status': 'Pending', 'Approved By': '-' },
+                    { 'Staff ID': 'EMP005', 'Name': 'Ibrahim Naseer', 'Department': 'Sales', 'Leave Type': 'Sick Leave', 'Start Date': '2025-03-18', 'End Date': '2025-03-19', 'Duration (Days)': 2, 'Status': 'Approved', 'Approved By': 'Ibrahim Rasheed' },
+                    { 'Staff ID': 'EMP006', 'Name': 'Mariyam Waheed', 'Department': 'IT', 'Leave Type': 'Annual Leave', 'Start Date': '2025-05-01', 'End Date': '2025-05-07', 'Duration (Days)': 7, 'Status': 'Pending', 'Approved By': '-' },
+                    { 'Staff ID': 'EMP007', 'Name': 'Hussein Ahmed', 'Department': 'Operations', 'Leave Type': 'Sick Leave', 'Start Date': '2025-03-25', 'End Date': '2025-03-26', 'Duration (Days)': 2, 'Status': 'Approved', 'Approved By': 'Ali Waheed' },
+                    { 'Staff ID': 'EMP008', 'Name': 'Aishath Latheef', 'Department': 'Admin', 'Leave Type': 'Personal Leave', 'Start Date': '2025-04-02', 'End Date': '2025-04-02', 'Duration (Days)': 1, 'Status': 'Approved', 'Approved By': 'Fathimath Naseem' },
+                    { 'Staff ID': 'EMP009', 'Name': 'Mohamed Rasheed', 'Department': 'Maintenance', 'Leave Type': 'Annual Leave', 'Start Date': '2025-04-15', 'End Date': '2025-04-20', 'Duration (Days)': 6, 'Status': 'Approved', 'Approved By': 'Ahmed Rasheed' },
+                    { 'Staff ID': 'EMP010', 'Name': 'Aminath Shafia', 'Department': 'Customer Service', 'Leave Type': 'Sick Leave', 'Start Date': '2025-03-30', 'End Date': '2025-03-31', 'Duration (Days)': 2, 'Status': 'Approved', 'Approved By': 'Ahmed Rasheed' }
                 ];
             }
             
